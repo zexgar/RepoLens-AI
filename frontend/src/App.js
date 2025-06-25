@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { HeroSection } from './components/ui/hero-section-dark';
+import { ActivityTokens } from './components/ui/activity-tokens';
+import { Calendar, TrendingUp, BarChart3, Clock, Users, CheckCircle2 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -172,83 +175,224 @@ function App() {
   };
 
   const getFreedomColor = (percentage) => {
-    if (percentage >= 70) return "text-green-400";
-    if (percentage >= 40) return "text-yellow-400";
-    return "text-red-400";
+    if (percentage >= 70) return "text-green-600";
+    if (percentage >= 40) return "text-amber-600";
+    return "text-red-600";
   };
 
   const getFreedomGradient = (percentage) => {
-    if (percentage >= 70) return "from-green-400 to-blue-500";
-    if (percentage >= 40) return "from-yellow-400 to-orange-500";
-    return "from-red-400 to-red-600";
+    if (percentage >= 70) return "from-green-500 to-emerald-600";
+    if (percentage >= 40) return "from-amber-500 to-orange-600";
+    return "from-red-500 to-rose-600";
   };
 
-  // Manual Analysis Mode (No Login Required)
+  // Landing Page/Login Screen
+  if (!user) {
+    return (
+      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+        <div className="min-h-screen bg-white">
+          {/* Hero Section */}
+          <HeroSection
+            title="Welcome to Liberty Tracker"
+            subtitle={{
+              regular: "Life, Liberty, and the ",
+              gradient: "Pursuit of Free Time",
+            }}
+            description="Transform your calendar chaos into clarity. Connect your Google Calendar to discover how much of your time is truly free and take control of your schedule."
+            ctaText="Get Started Free"
+            ctaHref="#auth-section"
+            bottomImage={{
+              light: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=400&fit=crop",
+              dark: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=400&fit=crop",
+            }}
+            gridOptions={{
+              angle: 65,
+              opacity: 0.3,
+              cellSize: 50,
+              lightLineColor: "#e5e7eb",
+              darkLineColor: "#374151",
+            }}
+            className="pb-0"
+          />
+
+          {/* Activity Tokens Section */}
+          <section className="py-20 bg-gray-50">
+            <div className="max-w-6xl mx-auto px-4">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  Track Your Daily <span className="liberty-gradient">Activities</span>
+                </h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  Visualize how you spend your time across different activities and find opportunities for more freedom
+                </p>
+              </div>
+              <ActivityTokens />
+            </div>
+          </section>
+
+          {/* Features Section */}
+          <section className="py-20 bg-white">
+            <div className="max-w-6xl mx-auto px-4">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  Why Choose <span className="liberty-gradient">Liberty Tracker</span>?
+                </h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  Powerful insights to help you reclaim your time and make better decisions about your schedule
+                </p>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                    <Calendar className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Smart Calendar Analysis</h3>
+                  <p className="text-gray-600">
+                    Automatically analyze your Google Calendar to understand your time allocation and identify patterns
+                  </p>
+                </div>
+                
+                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+                    <TrendingUp className="w-6 h-6 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Freedom Percentage</h3>
+                  <p className="text-gray-600">
+                    Get a clear metric of how much free time you actually have and track improvements over time
+                  </p>
+                </div>
+                
+                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
+                    <BarChart3 className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Actionable Insights</h3>
+                  <p className="text-gray-600">
+                    Receive personalized recommendations to optimize your schedule and increase your time freedom
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Auth Section */}
+          <section id="auth-section" className="py-20 bg-gray-50">
+            <div className="max-w-md mx-auto px-4">
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                <div className="text-center mb-8">
+                  <div className="flex items-center justify-center mb-4">
+                    <span className="text-4xl mr-2">🇺🇸</span>
+                    <h1 className="text-3xl font-bold liberty-gradient">
+                      Liberty Tracker
+                    </h1>
+                    <span className="text-4xl ml-2">🎆</span>
+                  </div>
+                  <p className="text-gray-600">
+                    Connect your Google Calendar to start analyzing your time freedom
+                  </p>
+                </div>
+                
+                {error && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-700 text-sm">{error}</p>
+                  </div>
+                )}
+                
+                <div className="mb-6 flex justify-center">
+                  <GoogleLogin
+                    onSuccess={handleGoogleLogin}
+                    onError={handleGoogleLoginError}
+                    theme="filled_blue"
+                    size="large"
+                    text="signin_with"
+                    shape="rectangular"
+                    logo_alignment="left"
+                  />
+                </div>
+                
+                {loading && (
+                  <div className="mb-6 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent mr-3"></div>
+                    <span className="text-gray-600 text-sm">Signing in...</span>
+                  </div>
+                )}
+                
+                <div className="text-center pt-6 border-t border-gray-200">
+                  <button
+                    onClick={() => setShowManual(true)}
+                    className="text-blue-600 hover:text-blue-700 text-sm underline"
+                  >
+                    Or analyze manually without Google login
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </GoogleOAuthProvider>
+    );
+  }
+
+  // Manual Analysis Mode
   if (showManual) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-900 via-blue-900 to-blue-800 relative overflow-hidden">
-        {/* Fireworks Animation Background */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="firework firework-1"></div>
-          <div className="firework firework-2"></div>
-          <div className="firework firework-3"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 py-8 relative z-10">
+      <div className="min-h-screen bg-white">
+        <div className="max-w-4xl mx-auto px-4 py-8">
           {/* Header */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
-              <span className="text-6xl mr-4">🇺🇸</span>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-red-400 via-white to-blue-400 bg-clip-text text-transparent">
+              <span className="text-5xl mr-4">🇺🇸</span>
+              <h1 className="text-4xl font-bold liberty-gradient">
                 Liberty Tracker
               </h1>
-              <span className="text-6xl ml-4">🎆</span>
+              <span className="text-5xl ml-4">🎆</span>
             </div>
-            <p className="text-2xl text-white font-semibold mb-2">
-              Life, Liberty, and the Pursuit of Free Time
+            <p className="text-xl text-gray-700 font-semibold mb-2">
+              Manual Analysis Mode
             </p>
-            <p className="text-lg text-gray-200 max-w-2xl mx-auto">
-              Manual analysis mode - discover how much of your time is truly free
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Paste your schedule data to discover how much of your time is truly free
             </p>
             <button
               onClick={() => setShowManual(false)}
-              className="mt-4 text-red-300 hover:text-red-200 underline"
+              className="mt-4 text-blue-600 hover:text-blue-700 underline"
             >
               ← Back to Google Login
             </button>
           </div>
 
-          {!analysis ? (
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl">
-                <div className="mb-6">
-                  <label className="block text-white text-lg font-semibold mb-3">
-                    🗽 Time Period Analysis
-                  </label>
-                  <select 
-                    value={timePeriod}
-                    onChange={(e) => setTimePeriod(e.target.value)}
-                    className="w-full p-3 bg-blue-900/50 border border-white/30 rounded-lg text-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  >
-                    <option value="today">Today</option>
-                    <option value="this week">This Week</option>
-                    <option value="this month">This Month</option>
-                    <option value="recent days">Recent Days</option>
-                  </select>
-                </div>
+          <ActivityTokens className="mb-12" />
 
-                <div className="mb-6">
-                  <label className="block text-white text-lg font-semibold mb-3">
-                    📅 Paste Your Schedule Data
-                  </label>
-                  <p className="text-gray-200 text-sm mb-3">
-                    Copy and paste your calendar events to calculate your time freedom percentage.
-                    Let's see how much liberty you truly have!
-                  </p>
-                  <textarea
-                    value={calendarData}
-                    onChange={(e) => setCalendarData(e.target.value)}
-                    placeholder="Paste your schedule here... 
+          {!analysis ? (
+            <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+              <div className="mb-6">
+                <label className="block text-gray-700 text-lg font-semibold mb-3">
+                  📅 Time Period Analysis
+                </label>
+                <select 
+                  value={timePeriod}
+                  onChange={(e) => setTimePeriod(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="today">Today</option>
+                  <option value="this week">This Week</option>
+                  <option value="this month">This Month</option>
+                  <option value="recent days">Recent Days</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-gray-700 text-lg font-semibold mb-3">
+                  📋 Paste Your Schedule Data
+                </label>
+                <p className="text-gray-600 text-sm mb-3">
+                  Copy and paste your calendar events to calculate your time freedom percentage.
+                </p>
+                <textarea
+                  value={calendarData}
+                  onChange={(e) => setCalendarData(e.target.value)}
+                  placeholder="Paste your schedule here... 
 
 Example:
 9:00 AM - 10:00 AM: Team Meeting
@@ -256,83 +400,88 @@ Example:
 2:00 PM - 3:00 PM: Client Call
 3:30 PM - 4:30 PM: Planning Session
 ..."
-                    className="w-full h-64 p-4 bg-blue-900/50 border border-white/30 rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
-                  />
-                </div>
-
-                {error && (
-                  <div className="mb-6 p-4 bg-red-800/50 border border-red-500 rounded-lg">
-                    <p className="text-red-200">{error}</p>
-                  </div>
-                )}
-
-                <button
-                  onClick={analyzeCalendarManual}
-                  disabled={loading || !calendarData.trim()}
-                  className="w-full py-4 px-6 bg-gradient-to-r from-red-600 via-white to-blue-600 hover:from-red-700 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-700 text-blue-900 font-bold rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-lg"
-                >
-                  {loading ? (
-                    <div className="flex items-center justify-center text-white">
-                      <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent mr-3"></div>
-                      🎇 Calculating Your Freedom...
-                    </div>
-                  ) : (
-                    "🗽 Calculate My Time Freedom"
-                  )}
-                </button>
+                  className="w-full h-64 p-4 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                />
               </div>
+
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-700">{error}</p>
+                </div>
+              )}
+
+              <button
+                onClick={analyzeCalendarManual}
+                disabled={loading || !calendarData.trim()}
+                className="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-lg"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
+                    🎇 Calculating Your Freedom...
+                  </div>
+                ) : (
+                  "🗽 Calculate My Time Freedom"
+                )}
+              </button>
             </div>
           ) : (
-            /* Results Display */
-            <div className="max-w-4xl mx-auto">
+            /* Results Display for Manual */
+            <div className="space-y-8">
               {/* Freedom Score */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl mb-8 text-center">
-                <div className="flex items-center justify-center mb-4">
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm text-center">
+                <div className="flex items-center justify-center mb-6">
                   <span className="text-4xl mr-4">🎆</span>
-                  <div className={`text-8xl font-bold bg-gradient-to-r ${getFreedomGradient(analysis.independence_percentage)} bg-clip-text text-transparent`}>
+                  <div className={`text-7xl font-bold bg-gradient-to-r ${getFreedomGradient(analysis.independence_percentage)} bg-clip-text text-transparent`}>
                     {analysis.independence_percentage}%
                   </div>
                   <span className="text-4xl ml-4">🎆</span>
                 </div>
-                <div className="text-2xl text-white font-semibold mb-4">
+                <div className="text-2xl text-gray-900 font-semibold mb-4">
                   🗽 TIME FREEDOM 🗽
                 </div>
-                <div className="text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed">
+                <div className="text-lg text-gray-600 max-w-2xl mx-auto">
                   {analysis.witty_message}
                 </div>
               </div>
 
-              {/* Freedom Stats */}
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg">
-                  <h3 className="text-xl font-bold text-white mb-4">📊 Liberty Stats</h3>
+              {/* Stats and Recommendations */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2 text-blue-600" />
+                    Liberty Stats
+                  </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-gray-200">Total Commitments:</span>
-                      <span className="text-white font-semibold">{analysis.meeting_stats.total_meetings}</span>
+                      <span className="text-gray-600">Total Commitments:</span>
+                      <span className="text-gray-900 font-medium">{analysis.meeting_stats.total_meetings}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-200">Hours Occupied:</span>
-                      <span className="text-white font-semibold">{analysis.meeting_stats.total_hours}</span>
+                      <span className="text-gray-600">Hours Occupied:</span>
+                      <span className="text-gray-900 font-medium">{analysis.meeting_stats.total_hours}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-200">Avg Duration:</span>
-                      <span className="text-white font-semibold">{analysis.meeting_stats.avg_meeting_length}</span>
+                      <span className="text-gray-600">Avg Duration:</span>
+                      <span className="text-gray-900 font-medium">{analysis.meeting_stats.avg_meeting_length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-200">Longest Free Block:</span>
-                      <span className="text-white font-semibold">{analysis.meeting_stats.longest_meeting_free_block}</span>
+                      <span className="text-gray-600">Longest Free Block:</span>
+                      <span className="text-gray-900 font-medium">{analysis.meeting_stats.longest_meeting_free_block}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg">
-                  <h3 className="text-xl font-bold text-white mb-4">🚀 Freedom Strategies</h3>
-                  <ul className="space-y-2">
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
+                    Freedom Strategies
+                  </h3>
+                  <ul className="space-y-3">
                     {analysis.recommendations.map((rec, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="text-red-400 mr-2">⭐</span>
-                        <span className="text-gray-200 text-sm">{rec}</span>
+                        <CheckCircle2 className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 text-sm">{rec}</span>
                       </li>
                     ))}
                   </ul>
@@ -340,18 +489,18 @@ Example:
               </div>
 
               {/* Detailed Analysis */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-lg mb-8">
-                <h3 className="text-2xl font-bold text-white mb-4">🎯 Your Freedom Declaration</h3>
-                <p className="text-gray-200 leading-relaxed whitespace-pre-line">
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4">🎯 Your Freedom Declaration</h3>
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                   {analysis.detailed_analysis}
                 </p>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Button */}
               <div className="text-center">
                 <button
                   onClick={resetAnalysis}
-                  className="py-3 px-8 bg-gradient-to-r from-blue-600 to-red-600 hover:from-blue-700 hover:to-red-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="py-3 px-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   🎆 Analyze Another Period
                 </button>
@@ -363,267 +512,197 @@ Example:
     );
   }
 
-  // Login Screen
-  if (!user) {
-    return (
-      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-        <div className="min-h-screen bg-gradient-to-br from-red-900 via-blue-900 to-blue-800 relative overflow-hidden flex items-center justify-center">
-          {/* Hero Background */}
-          <div 
-            className="absolute inset-0 opacity-20 bg-cover bg-center"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1498174979972-c9de7e6a93d6')`
-            }}
-          ></div>
-          
-          {/* Fireworks Animation */}
-          <div className="absolute inset-0 opacity-30">
-            <div className="firework firework-1"></div>
-            <div className="firework firework-2"></div>
-            <div className="firework firework-3"></div>
-          </div>
-          
-          <div className="max-w-md w-full mx-4 relative z-10">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl text-center">
-              <div className="flex items-center justify-center mb-6">
-                <span className="text-6xl mr-4">🇺🇸</span>
-                <div>
-                  <h1 className="text-4xl font-bold bg-gradient-to-r from-red-400 via-white to-blue-400 bg-clip-text text-transparent">
-                    Liberty Tracker
-                  </h1>
-                  <p className="text-white text-sm mt-1">Time Freedom Calculator</p>
-                </div>
-                <span className="text-6xl ml-4">🎆</span>
-              </div>
-              
-              <p className="text-xl text-white font-semibold mb-2">
-                Life, Liberty, and the Pursuit of Free Time
-              </p>
-              
-              <p className="text-gray-200 mb-8">
-                Declare your independence from busy schedules! Connect your Google Calendar to discover 
-                how much of your time is truly free.
-              </p>
-              
-              {error && (
-                <div className="mb-6 p-4 bg-red-800/50 border border-red-500 rounded-lg">
-                  <p className="text-red-200 text-sm">{error}</p>
-                </div>
-              )}
-              
-              <div className="mb-6">
-                <GoogleLogin
-                  onSuccess={handleGoogleLogin}
-                  onError={handleGoogleLoginError}
-                  theme="filled_blue"
-                  size="large"
-                  text="signin_with"
-                  shape="rectangular"
-                  logo_alignment="left"
-                />
-              </div>
-              
-              {loading && (
-                <div className="mb-6 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-red-400 border-t-transparent mr-3"></div>
-                  <span className="text-gray-200">Signing in...</span>
-                </div>
-              )}
-              
-              <div className="mt-8 pt-6 border-t border-white/20">
-                <button
-                  onClick={() => setShowManual(true)}
-                  className="text-red-300 hover:text-red-200 text-sm underline"
-                >
-                  🗽 Or analyze manually without Google login
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </GoogleOAuthProvider>
-    );
-  }
-
+  // Main App (User Logged In)
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <div className="min-h-screen bg-gradient-to-br from-red-900 via-blue-900 to-blue-800 relative overflow-hidden">
-        {/* Background Elements */}
-        <div 
-          className="absolute inset-0 opacity-10 bg-cover bg-center"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa')`
-          }}
-        ></div>
-        
-        <div className="container mx-auto px-4 py-8 relative z-10">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="flex justify-between items-center mb-6">
+      <div className="min-h-screen bg-white">
+        {/* Header */}
+        <header className="bg-white border-b border-gray-200 shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 py-4">
+            <div className="flex justify-between items-center">
               <div className="flex items-center">
-                <span className="text-5xl mr-4">🇺🇸</span>
-                <h1 className="text-5xl font-bold bg-gradient-to-r from-red-400 via-white to-blue-400 bg-clip-text text-transparent">
+                <span className="text-4xl mr-3">🇺🇸</span>
+                <h1 className="text-3xl font-bold liberty-gradient">
                   Liberty Tracker
                 </h1>
-                <span className="text-5xl ml-4">🎆</span>
+                <span className="text-4xl ml-3">🎆</span>
               </div>
               <div className="flex items-center space-x-4">
                 <div className="text-right">
-                  <p className="text-white font-semibold">{user.name}</p>
-                  <p className="text-gray-300 text-sm">{user.email}</p>
+                  <p className="text-gray-900 font-medium">{user.name}</p>
+                  <p className="text-gray-500 text-sm">{user.email}</p>
                 </div>
                 <button
                   onClick={logout}
-                  className="px-4 py-2 bg-red-700/50 hover:bg-red-600/50 text-white rounded-lg transition-colors border border-white/20"
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors border border-gray-300"
                 >
                   Logout
                 </button>
               </div>
             </div>
-            <p className="text-xl text-white max-w-2xl mx-auto">
-              Your Google Calendar is connected! Let's calculate your time freedom and declare independence from busy schedules.
+          </div>
+        </header>
+
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="text-center mb-12">
+            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+              Your Google Calendar is connected! Let's calculate your time freedom and help you reclaim control of your schedule.
             </p>
           </div>
 
+          <ActivityTokens className="mb-12" />
+
           {!analysis ? (
             /* Analysis Options */
-            <div className="max-w-4xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Automatic Analysis */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-lg">
-                  <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
-                    <span className="bg-gradient-to-r from-blue-400 to-red-500 w-3 h-3 rounded-full mr-3"></span>
-                    🗽 Automatic Freedom Analysis
-                  </h3>
-                  <p className="text-gray-200 mb-6">
-                    Connect your Google Calendar to automatically calculate your time freedom percentage.
-                  </p>
-                  
-                  <div className="mb-6">
-                    <label className="block text-white text-lg font-semibold mb-3">
-                      📅 Time Period
-                    </label>
-                    <select 
-                      value={timePeriod}
-                      onChange={(e) => setTimePeriod(e.target.value)}
-                      className="w-full p-3 bg-blue-900/50 border border-white/30 rounded-lg text-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    >
-                      <option value="today">Today</option>
-                      <option value="this_week">This Week</option>
-                      <option value="this_month">This Month</option>
-                      <option value="recent_days">Recent Days</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-4">
-                    <button
-                      onClick={requestCalendarAccess}
-                      className="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-red-600 hover:from-blue-700 hover:to-red-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
-                    >
-                      🎯 Authorize Google Calendar
-                    </button>
-                    
-                    <button
-                      onClick={analyzeCalendarAuto}
-                      disabled={loading}
-                      className="w-full py-3 px-6 bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
-                    >
-                      {loading ? "🎇 Calculating..." : "🗽 Calculate My Freedom"}
-                    </button>
-                  </div>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Automatic Analysis */}
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <Calendar className="w-6 h-6 text-blue-600 mr-3" />
+                  Automatic Analysis
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Automatically analyze your Google Calendar to calculate your time freedom percentage.
+                </p>
+                
+                <div className="mb-6">
+                  <label className="block text-gray-700 font-medium mb-3">
+                    📅 Time Period
+                  </label>
+                  <select 
+                    value={timePeriod}
+                    onChange={(e) => setTimePeriod(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="today">Today</option>
+                    <option value="this_week">This Week</option>
+                    <option value="this_month">This Month</option>
+                    <option value="recent_days">Recent Days</option>
+                  </select>
                 </div>
 
-                {/* Manual Analysis */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-lg">
-                  <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
-                    <span className="bg-gradient-to-r from-red-400 to-blue-500 w-3 h-3 rounded-full mr-3"></span>
-                    📝 Manual Freedom Analysis
-                  </h3>
-                  <p className="text-gray-200 mb-6">
-                    Or paste your schedule data manually for freedom calculation.
-                  </p>
+                <div className="space-y-4">
+                  <button
+                    onClick={requestCalendarAccess}
+                    className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                  >
+                    🎯 Authorize Google Calendar
+                  </button>
                   
-                  <div className="mb-4">
-                    <textarea
-                      value={calendarData}
-                      onChange={(e) => setCalendarData(e.target.value)}
-                      placeholder="Paste your schedule here...
+                  <button
+                    onClick={analyzeCalendarAuto}
+                    disabled={loading}
+                    className="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
+                        Calculating...
+                      </div>
+                    ) : (
+                      "🗽 Calculate My Freedom"
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Manual Analysis */}
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <Clock className="w-6 h-6 text-purple-600 mr-3" />
+                  Manual Analysis
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Paste your schedule data manually for freedom calculation.
+                </p>
+                
+                <div className="mb-4">
+                  <textarea
+                    value={calendarData}
+                    onChange={(e) => setCalendarData(e.target.value)}
+                    placeholder="Paste your schedule here...
 
 Example:
 9:00 AM - 10:00 AM: Team Meeting
 10:00 AM - 11:30 AM: Project Review
 ..."
-                      className="w-full h-32 p-4 bg-blue-900/50 border border-white/30 rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none text-sm"
-                    />
-                  </div>
-
-                  <button
-                    onClick={analyzeCalendarManual}
-                    disabled={loading || !calendarData.trim()}
-                    className="w-full py-3 px-6 bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-700 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
-                  >
-                    {loading ? "🎇 Analyzing..." : "🎆 Analyze Manual Data"}
-                  </button>
+                    className="w-full h-32 p-4 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none text-sm"
+                  />
                 </div>
+
+                <button
+                  onClick={analyzeCalendarManual}
+                  disabled={loading || !calendarData.trim()}
+                  className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
+                      Analyzing...
+                    </div>
+                  ) : (
+                    "🎆 Analyze Manual Data"
+                  )}
+                </button>
               </div>
-
-              {error && (
-                <div className="mt-8 p-4 bg-red-800/50 border border-red-500 rounded-lg max-w-2xl mx-auto">
-                  <p className="text-red-200 text-center">{error}</p>
-                </div>
-              )}
             </div>
           ) : (
             /* Results Display */
-            <div className="max-w-4xl mx-auto">
+            <div className="space-y-8">
               {/* Freedom Score */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl mb-8 text-center">
-                <div className="flex items-center justify-center mb-4">
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm text-center">
+                <div className="flex items-center justify-center mb-6">
                   <span className="text-4xl mr-4">🎆</span>
-                  <div className={`text-8xl font-bold bg-gradient-to-r ${getFreedomGradient(analysis.independence_percentage)} bg-clip-text text-transparent`}>
+                  <div className={`text-7xl font-bold bg-gradient-to-r ${getFreedomGradient(analysis.independence_percentage)} bg-clip-text text-transparent`}>
                     {analysis.independence_percentage}%
                   </div>
                   <span className="text-4xl ml-4">🎆</span>
                 </div>
-                <div className="text-2xl text-white font-semibold mb-4">
+                <div className="text-2xl text-gray-900 font-semibold mb-4">
                   🗽 TIME FREEDOM 🗽
                 </div>
-                <div className="text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed">
+                <div className="text-lg text-gray-600 max-w-2xl mx-auto">
                   {analysis.witty_message}
                 </div>
               </div>
 
               {/* Stats and Recommendations */}
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg">
-                  <h3 className="text-xl font-bold text-white mb-4">📊 Liberty Stats</h3>
+              <div className="grid lg:grid-cols-2 gap-6">
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2 text-blue-600" />
+                    Liberty Stats
+                  </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-gray-200">Total Commitments:</span>
-                      <span className="text-white font-semibold">{analysis.meeting_stats.total_meetings}</span>
+                      <span className="text-gray-600">Total Commitments:</span>
+                      <span className="text-gray-900 font-medium">{analysis.meeting_stats.total_meetings}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-200">Hours Occupied:</span>
-                      <span className="text-white font-semibold">{analysis.meeting_stats.total_hours}</span>
+                      <span className="text-gray-600">Hours Occupied:</span>
+                      <span className="text-gray-900 font-medium">{analysis.meeting_stats.total_hours}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-200">Avg Duration:</span>
-                      <span className="text-white font-semibold">{analysis.meeting_stats.avg_meeting_length}</span>
+                      <span className="text-gray-600">Avg Duration:</span>
+                      <span className="text-gray-900 font-medium">{analysis.meeting_stats.avg_meeting_length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-200">Longest Free Block:</span>
-                      <span className="text-white font-semibold">{analysis.meeting_stats.longest_meeting_free_block}</span>
+                      <span className="text-gray-600">Longest Free Block:</span>
+                      <span className="text-gray-900 font-medium">{analysis.meeting_stats.longest_meeting_free_block}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg">
-                  <h3 className="text-xl font-bold text-white mb-4">🚀 Freedom Strategies</h3>
-                  <ul className="space-y-2">
+                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
+                    Freedom Strategies
+                  </h3>
+                  <ul className="space-y-3">
                     {analysis.recommendations.map((rec, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="text-red-400 mr-2">⭐</span>
-                        <span className="text-gray-200 text-sm">{rec}</span>
+                        <CheckCircle2 className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600 text-sm">{rec}</span>
                       </li>
                     ))}
                   </ul>
@@ -631,22 +710,28 @@ Example:
               </div>
 
               {/* Detailed Analysis */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-lg mb-8">
-                <h3 className="text-2xl font-bold text-white mb-4">🎯 Your Freedom Declaration</h3>
-                <p className="text-gray-200 leading-relaxed whitespace-pre-line">
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4">🎯 Your Freedom Declaration</h3>
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                   {analysis.detailed_analysis}
                 </p>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Button */}
               <div className="text-center">
                 <button
                   onClick={resetAnalysis}
-                  className="py-3 px-8 bg-gradient-to-r from-blue-600 to-red-600 hover:from-blue-700 hover:to-red-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="py-3 px-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   🎆 Analyze Another Period
                 </button>
               </div>
+            </div>
+          )}
+
+          {error && (
+            <div className="mt-8 p-4 bg-red-50 border border-red-200 rounded-lg max-w-2xl mx-auto">
+              <p className="text-red-700 text-center">{error}</p>
             </div>
           )}
         </div>
