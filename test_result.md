@@ -202,17 +202,41 @@ frontend:
         agent: "main"
         comment: "Set up shadcn UI structure with proper utilities, Tailwind config, and installed required dependencies"
   
-  - task: "Hero section title layout with emphasis"
+  - task: "Interactive login component"
     implemented: true
     working: true
-    file: "hero-section-dark.jsx, App.js"
+    file: "interactive-login.jsx, badge.jsx, button.jsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: true
         agent: "main"
-        comment: "Updated title layout with Life, Liberty, and the on first line (smaller), Pursuit of Free Time on second line (larger, gradient), with 135% line spacing for emphasis"
+        comment: "Created interactive login section inspired by pricing component with Liberty Tracker theming, featuring Google Calendar and Manual analysis options with dynamic selection and features"
+
+  - task: "Clean activities section without terminal"
+    implemented: true
+    working: true
+    file: "App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Removed terminal component from activities section, cleaned up layout with just FlickeringGrid background and activity tokens for better visual hierarchy"
+
+  - task: "Updated font weights to medium"
+    implemented: true
+    working: true
+    file: "hero-section-dark.jsx, App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Changed main heading font weight from bold to medium for improved typography and visual balance"
   
   - task: "Responsive and accessible design"
     implemented: true
