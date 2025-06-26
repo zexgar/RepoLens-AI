@@ -66,12 +66,19 @@ const HeroSection = React.forwardRef(
                 {title}
                 <ChevronRight className="inline w-4 h-4 ml-2 group-hover:translate-x-1 duration-300" />
               </h1>
-              <h2 className="text-4xl tracking-tighter font-geist bg-clip-text text-transparent mx-auto md:text-6xl bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.75)_100%)] dark:bg-[linear-gradient(180deg,_#FFF_0%,_rgba(255,_255,_255,_0.00)_202.08%)]">
-                {subtitle.regular}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-300 dark:to-orange-200">
-                  {subtitle.gradient}
-                </span>
-              </h2>
+              
+              {/* Updated title layout with emphasis */}
+              <div className="space-y-2" style={{ lineHeight: '1.35' }}>
+                <div className="text-2xl md:text-3xl font-normal text-gray-700 dark:text-gray-300">
+                  {subtitle.regular}
+                </div>
+                <div className="text-5xl md:text-7xl font-black tracking-tight">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-300 dark:to-orange-200">
+                    {subtitle.gradient}
+                  </span>
+                </div>
+              </div>
+              
               <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300 text-lg">
                 {description}
               </p>
