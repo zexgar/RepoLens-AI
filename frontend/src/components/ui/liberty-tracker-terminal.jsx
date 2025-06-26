@@ -7,82 +7,74 @@ import {
 
 export function LibertyTrackerTerminal() {
   return (
-    <div className="relative terminal-emerging-container">
-      {/* Half-height terminal with overflow hidden */}
-      <div className="relative overflow-hidden" style={{ height: '250px' }}>
-        <Terminal className="transform translate-y-0">
-          <TypingAnimation className="text-blue-600 font-semibold">
-            📊 &gt; liberty-tracker analyze --schedule daily
-          </TypingAnimation>
+    <div className="relative">
+      {/* Full-height terminal without overflow restrictions */}
+      <Terminal className="transform translate-y-0">
+        <TypingAnimation className="text-blue-600 font-semibold">
+          📊 &gt; liberty-tracker analyze --schedule daily
+        </TypingAnimation>
 
-          <AnimatedSpan delay={1500} className="text-purple-600">
-            <span>🔍 Scanning your daily schedule...</span>
-          </AnimatedSpan>
+        <AnimatedSpan delay={1500} className="text-purple-600">
+          <span>🔍 Scanning your daily schedule...</span>
+        </AnimatedSpan>
 
-          <AnimatedSpan delay={2000} className="text-green-600">
-            <span>✨ Found 8 meetings scheduled</span>
-          </AnimatedSpan>
+        <AnimatedSpan delay={2000} className="text-green-600">
+          <span>✨ Found 8 meetings scheduled</span>
+        </AnimatedSpan>
 
-          <AnimatedSpan delay={2500} className="text-green-600">
-            <span>🚗 Detected 2.5 hours of commute time</span>
-          </AnimatedSpan>
+        <AnimatedSpan delay={2500} className="text-green-600">
+          <span>🚗 Detected 2.5 hours of commute time</span>
+        </AnimatedSpan>
 
-          <AnimatedSpan delay={3000} className="text-green-600">
-            <span>💼 Identified 6 focus work blocks</span>
-          </AnimatedSpan>
+        <AnimatedSpan delay={3000} className="text-green-600">
+          <span>💼 Identified 6 focus work blocks</span>
+        </AnimatedSpan>
 
-          <AnimatedSpan delay={3500} className="text-green-600">
-            <span>☕ Analyzing break patterns...</span>
-          </AnimatedSpan>
+        <AnimatedSpan delay={3500} className="text-green-600">
+          <span>☕ Analyzing break patterns...</span>
+        </AnimatedSpan>
 
-          <AnimatedSpan delay={4000} className="text-amber-600">
-            <span>⚡ Processing calendar data...</span>
-          </AnimatedSpan>
+        <AnimatedSpan delay={4000} className="text-amber-600">
+          <span>⚡ Processing calendar data...</span>
+        </AnimatedSpan>
 
-          <AnimatedSpan delay={4500} className="text-blue-600">
-            <span>🧮 Calculating freedom percentage...</span>
-          </AnimatedSpan>
+        <AnimatedSpan delay={4500} className="text-blue-600">
+          <span>🧮 Calculating freedom percentage...</span>
+        </AnimatedSpan>
 
-          <AnimatedSpan delay={5000} className="text-purple-600">
-            <div className="space-y-1">
-              <div>🎉 ANALYSIS COMPLETE</div>
-              <div className="pl-4 text-gray-800">
-                → Time Freedom: <span className="text-green-600 font-bold">67% 🎯</span>
-              </div>
-              <div className="pl-4 text-gray-800">
-                → Longest free block: <span className="text-blue-600 font-semibold">3.5 hours ⏰</span>
-              </div>
-              <div className="pl-4 text-gray-800">
-                → Busiest period: <span className="text-red-600 font-semibold">2PM - 5PM 📈</span>
-              </div>
+        <AnimatedSpan delay={5000} className="text-purple-600">
+          <div className="space-y-1">
+            <div>🎉 ANALYSIS COMPLETE</div>
+            <div className="pl-4 text-gray-800">
+              → Time Freedom: <span className="text-green-600 font-bold">67% 🎯</span>
             </div>
-          </AnimatedSpan>
-
-          <AnimatedSpan delay={6000} className="text-cyan-600">
-            <div className="space-y-1">
-              <div>💡 OPTIMIZATION SUGGESTIONS:</div>
-              <div className="pl-4 text-gray-700">🏃‍♀️ Move morning workout to 6:30 AM</div>
-              <div className="pl-4 text-gray-700">📅 Batch meetings on Tuesday/Thursday</div>
-              <div className="pl-4 text-gray-700">🎯 Block 9-11 AM for deep work</div>
-              <div className="pl-4 text-gray-700">🍽️ Schedule lunch breaks consistently</div>
+            <div className="pl-4 text-gray-800">
+              → Longest free block: <span className="text-blue-600 font-semibold">3.5 hours ⏰</span>
             </div>
-          </AnimatedSpan>
+            <div className="pl-4 text-gray-800">
+              → Busiest period: <span className="text-red-600 font-semibold">2PM - 5PM 📈</span>
+            </div>
+          </div>
+        </AnimatedSpan>
 
-          <TypingAnimation delay={7000} className="text-green-600 font-semibold">
-            🚀 Success! You could gain 2.3 hours of free time per day.
-          </TypingAnimation>
+        <AnimatedSpan delay={6000} className="text-cyan-600">
+          <div className="space-y-1">
+            <div>💡 OPTIMIZATION SUGGESTIONS:</div>
+            <div className="pl-4 text-gray-700">🏃‍♀️ Move morning workout to 6:30 AM</div>
+            <div className="pl-4 text-gray-700">📅 Batch meetings on Tuesday/Thursday</div>
+            <div className="pl-4 text-gray-700">🎯 Block 9-11 AM for deep work</div>
+            <div className="pl-4 text-gray-700">🍽️ Schedule lunch breaks consistently</div>
+          </div>
+        </AnimatedSpan>
 
-          <TypingAnimation delay={7500} className="text-gray-600">
-            🗽 Ready to reclaim your liberty? Start your journey today! 🌟
-          </TypingAnimation>
-        </Terminal>
-      </div>
-      
-      {/* Gradient overlay that blends terminal into next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent via-white/70 to-white pointer-events-none z-20"></div>
-      
-      {/* Secondary gradient for seamless blend */}
-      <div className="absolute -bottom-12 left-0 right-0 h-12 bg-gradient-to-b from-white/50 to-transparent pointer-events-none z-10"></div>
+        <TypingAnimation delay={7000} className="text-green-600 font-semibold">
+          🚀 Success! You could gain 2.3 hours of free time per day.
+        </TypingAnimation>
+
+        <TypingAnimation delay={7500} className="text-gray-600">
+          🗽 Ready to reclaim your liberty? Start your journey today! 🌟
+        </TypingAnimation>
+      </Terminal>
     </div>
   );
 }
