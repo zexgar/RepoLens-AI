@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "./button"
 import { Eye, EyeOff, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "../../lib/utils"
