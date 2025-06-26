@@ -217,6 +217,50 @@
   gap: 0.75rem;
 }
 
+/* Terminal dissolving effect */
+.terminal-dissolve {
+  position: relative;
+}
+
+.terminal-dissolve::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(249, 250, 251, 0.1) 20%,
+    rgba(249, 250, 251, 0.4) 50%,
+    rgba(249, 250, 251, 0.8) 80%,
+    rgb(249, 250, 251) 100%
+  );
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Enhanced dissolving layers */
+.dissolve-layer-1 {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(249, 250, 251, 0.3) 40%,
+    rgba(249, 250, 251, 0.7) 70%,
+    rgb(249, 250, 251) 100%
+  );
+}
+
+.dissolve-layer-2 {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(249, 250, 251, 0.6) 60%,
+    rgb(249, 250, 251) 100%
+  );
+}
+
 /* Slideshow animations */
 .slide-enter {
   opacity: 0;
