@@ -57,6 +57,7 @@ const HeroSection = React.forwardRef(
   ) => {
     return (
       <div className={cn("relative", className)} ref={ref} {...props}>
+        {/* Hero Content Section */}
         <div className="absolute top-0 z-[0] h-screen w-screen bg-purple-950/10 dark:bg-purple-950/10 bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
         <section className="relative max-w-full mx-auto z-1">
           <RetroGrid {...gridOptions} />
@@ -96,31 +97,21 @@ const HeroSection = React.forwardRef(
                 </span>
               </div>
             </div>
-            
-            {/* Terminal Component */}
-            {terminalComponent && (
-              <div className="mt-16 relative z-10">
-                {terminalComponent}
-              </div>
-            )}
-            
-            {/* Bottom Image */}
-            {bottomImage && !terminalComponent && (
-              <div className="mt-32 mx-10 relative z-10">
-                <img
-                  src={bottomImage.light}
-                  className="w-full shadow-lg rounded-lg border border-gray-200 dark:hidden"
-                  alt="Dashboard preview"
-                />
-                <img
-                  src={bottomImage.dark}
-                  className="hidden w-full shadow-lg rounded-lg border border-gray-800 dark:block"
-                  alt="Dashboard preview"
-                />
-              </div>
-            )}
           </div>
         </section>
+        
+        {/* Extended Gradient Section with Terminal - Edge to Edge */}
+        {terminalComponent && (
+          <div className="relative bg-gradient-to-b from-white via-gray-50 to-gray-50 pb-0 -mb-px">
+            {/* Terminal positioned to bridge sections */}
+            <div className="relative z-20 max-w-screen-xl mx-auto px-4 -mt-16">
+              {terminalComponent}
+            </div>
+            
+            {/* Gradient blend overlay */}
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-gray-50 pointer-events-none z-10"></div>
+          </div>
+        )}
       </div>
     )
   },
