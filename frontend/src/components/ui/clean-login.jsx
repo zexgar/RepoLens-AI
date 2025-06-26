@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button } from "./button"
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
+import { Eye, EyeOff } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { GoogleLogin } from '@react-oauth/google'
 
@@ -23,9 +23,9 @@ function CleanLoginSection({
         <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
           {/* Header with updated layout */}
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <span className="text-2xl mr-2">🇺🇸</span>
-              <h1 className="text-2xl font-medium liberty-gradient">
+            <div className="liberty-tracker-header mb-4">
+              <span className="flag">🇺🇸</span>
+              <h1 className="title liberty-gradient">
                 Liberty Tracker
               </h1>
             </div>
@@ -77,9 +77,9 @@ function CleanLoginSection({
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
                   {showPassword ? (
-                    <EyeSlashIcon className="w-5 h-5" />
+                    <EyeOff className="w-5 h-5" />
                   ) : (
-                    <EyeIcon className="w-5 h-5" />
+                    <Eye className="w-5 h-5" />
                   )}
                 </button>
               </div>
