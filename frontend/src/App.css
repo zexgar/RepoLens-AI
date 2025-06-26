@@ -152,17 +152,17 @@
   }
 }
 
-/* Flowing gradient button animation */
-.flowing-gradient-button {
+/* Enhanced flowing gradient button animation */
+.enhanced-flowing-gradient-button {
   position: relative;
   background: linear-gradient(90deg, #dc2626, #2563eb);
 }
 
-.flowing-gradient-button:hover .animate-gradient-flow {
-  animation: gradient-flow 2s ease-in-out infinite;
+.enhanced-flowing-gradient-button:hover .bg-gradient-to-r {
+  animation: enhanced-gradient-flow 2s ease-in-out infinite;
 }
 
-@keyframes gradient-flow {
+@keyframes enhanced-gradient-flow {
   0% {
     background-position: 0% 50%;
   }
@@ -174,21 +174,70 @@
   }
 }
 
-/* Updated Liberty Tracker header layout */
+/* Enhanced Liberty Tracker header with better contrast */
+.liberty-tracker-enhanced {
+  background: linear-gradient(
+    135deg,
+    #dc2626 0%,
+    #ffffff 30%,
+    #2563eb 60%,
+    #dc2626 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: enhanced-liberty-gradient 6s ease infinite;
+  text-shadow: 0 0 30px rgba(220, 38, 38, 0.3);
+}
+
+@keyframes enhanced-liberty-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Liberty Tracker header layout */
 .liberty-tracker-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.liberty-tracker-header .flag {
-  font-size: 1.5rem; /* smaller */
+/* Slideshow animations */
+.slide-enter {
+  opacity: 0;
+  transform: translateX(100%);
 }
 
-.liberty-tracker-header .title {
-  font-size: 1.5rem; /* medium size */
-  font-weight: 500; /* medium weight */
+.slide-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.slide-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 500ms, transform 500ms;
 }
 
 /* Activity Token Animations */
