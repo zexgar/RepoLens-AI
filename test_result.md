@@ -190,17 +190,17 @@ frontend:
         agent: "main"
         comment: "Set up shadcn UI structure with proper utilities, Tailwind config, and installed required dependencies"
   
-  - task: "Responsive and accessible design"
+  - task: "Hero section title layout with emphasis"
     implemented: true
     working: true
-    file: "App.css, App.js"
+    file: "hero-section-dark.jsx, App.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: true
         agent: "main"
-        comment: "Implemented responsive design with proper focus states, reduced motion preferences, and accessibility features"
+        comment: "Updated title layout with Life, Liberty, and the on first line (smaller), Pursuit of Free Time on second line (larger, gradient), with 135% line spacing for emphasis"
 
 metadata:
   created_by: "main_agent"
