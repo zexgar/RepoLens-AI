@@ -152,26 +152,51 @@
   }
 }
 
-/* Terminal blending effects */
-.terminal-container {
+/* Terminal emerging effects */
+.terminal-emerging-container {
   position: relative;
+  z-index: 30;
 }
 
-.terminal-gradient-overlay {
+.terminal-emerging-container .terminal {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* FlickeringGrid masking effects */
+.flickering-grid-masked {
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    black 20%,
+    transparent 70%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    black 20%,
+    transparent 70%
+  );
+}
+
+/* Enhanced section transitions */
+.section-transition {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-transition::before {
+  content: '';
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
-  height: 120px;
+  height: 1px;
   background: linear-gradient(
-    to bottom,
+    90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.3) 40%,
-    rgba(255, 255, 255, 0.7) 70%,
-    rgb(255, 255, 255) 100%
+    rgba(156, 163, 175, 0.3) 50%,
+    transparent 100%
   );
-  pointer-events: none;
-  z-index: 10;
 }
 
 /* Activity Token Animations */
