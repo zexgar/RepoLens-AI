@@ -6,7 +6,7 @@ import { HeroSection } from './components/ui/hero-section-dark';
 import { ActivityTokens } from './components/ui/activity-tokens';
 import { LibertyTrackerTerminal } from './components/ui/liberty-tracker-terminal';
 import { FlickeringGrid } from './components/ui/flickering-grid';
-import { InteractiveLoginSection } from './components/ui/interactive-login';
+import { CleanLoginSection } from './components/ui/clean-login';
 import { Calendar, TrendingUp, BarChart3, Clock, Users, CheckCircle2 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
