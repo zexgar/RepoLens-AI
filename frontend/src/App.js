@@ -292,13 +292,15 @@ function App() {
           </section>
 
           {/* Clean Login Section */}
-          <CleanLoginSection
-            onGoogleLogin={handleGoogleLogin}
-            onGoogleLoginError={handleGoogleLoginError}
-            onManualToggle={() => setShowManual(true)}
-            loading={loading}
-            error={error}
-          />
+          <div id="auth-section">
+            <CleanLoginSection
+              onGoogleLogin={handleGoogleLogin}
+              onGoogleLoginError={handleGoogleLoginError}
+              onManualToggle={() => setShowManual(true)}
+              loading={loading}
+              error={error}
+            />
+          </div>
         </div>
       </GoogleOAuthProvider>
     );
