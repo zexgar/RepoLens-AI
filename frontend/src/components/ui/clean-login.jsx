@@ -56,7 +56,7 @@ function CleanLoginSection({
   }
 
   // Auto-advance slides
-  useState(() => {
+  useEffect(() => {
     const interval = setInterval(nextSlide, 4000)
     return () => clearInterval(interval)
   }, [])
