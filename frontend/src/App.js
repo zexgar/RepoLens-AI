@@ -233,7 +233,7 @@ function App() {
             <div className="max-w-6xl mx-auto px-4">
               <div className="text-center mb-16">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                  Why Choose <span className="liberty-gradient">Liberty Tracker</span>?
+                  Why Choose <span className="choose-gradient">Liberty Tracker</span>?
                 </h2>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                   Powerful insights to help you reclaim your time and make better decisions about your schedule
