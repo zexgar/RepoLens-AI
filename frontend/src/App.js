@@ -196,7 +196,7 @@ function App() {
           <HeroSection
             title="Welcome to Liberty Tracker"
             subtitle={{
-              regular: "Life, Liberty, and the ",
+              regular: "Life, Liberty, and the",
               gradient: "Pursuit of Free Time",
             }}
             description="Transform your calendar chaos into clarity. Connect your Google Calendar to discover how much of your time is truly free and take control of your schedule."
