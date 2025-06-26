@@ -67,12 +67,12 @@ const HeroSection = React.forwardRef(
                 <ChevronRight className="inline w-4 h-4 ml-2 group-hover:translate-x-1 duration-300" />
               </h1>
               
-              {/* Updated title layout with emphasis */}
+              {/* Updated title layout with medium font weight */}
               <div className="space-y-2" style={{ lineHeight: '1.35' }}>
                 <div className="text-2xl md:text-3xl font-normal text-gray-700 dark:text-gray-300">
                   {subtitle.regular}
                 </div>
-                <div className="text-5xl md:text-7xl font-black tracking-tight">
+                <div className="text-5xl md:text-7xl font-medium tracking-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-300 dark:to-orange-200">
                     {subtitle.gradient}
                   </span>
