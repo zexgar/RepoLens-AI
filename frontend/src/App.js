@@ -291,59 +291,14 @@ function App() {
             </div>
           </section>
 
-          {/* Auth Section */}
-          <section id="auth-section" className="py-20 bg-gray-50">
-            <div className="max-w-md mx-auto px-4">
-              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-                <div className="text-center mb-8">
-                  <div className="flex items-center justify-center mb-4">
-                    <span className="text-4xl mr-2">🇺🇸</span>
-                    <h1 className="text-3xl font-bold liberty-gradient">
-                      Liberty Tracker
-                    </h1>
-                    <span className="text-4xl ml-2">🎆</span>
-                  </div>
-                  <p className="text-gray-600">
-                    Connect your Google Calendar to start analyzing your time freedom
-                  </p>
-                </div>
-                
-                {error && (
-                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-700 text-sm">{error}</p>
-                  </div>
-                )}
-                
-                <div className="mb-6 flex justify-center">
-                  <GoogleLogin
-                    onSuccess={handleGoogleLogin}
-                    onError={handleGoogleLoginError}
-                    theme="filled_blue"
-                    size="large"
-                    text="signin_with"
-                    shape="rectangular"
-                    logo_alignment="left"
-                  />
-                </div>
-                
-                {loading && (
-                  <div className="mb-6 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent mr-3"></div>
-                    <span className="text-gray-600 text-sm">Signing in...</span>
-                  </div>
-                )}
-                
-                <div className="text-center pt-6 border-t border-gray-200">
-                  <button
-                    onClick={() => setShowManual(true)}
-                    className="text-blue-600 hover:text-blue-700 text-sm underline"
-                  >
-                    Or analyze manually without Google login
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
+          {/* Interactive Auth Section */}
+          <InteractiveLoginSection
+            onGoogleLogin={handleGoogleLogin}
+            onGoogleLoginError={handleGoogleLoginError}
+            onManualToggle={() => setShowManual(true)}
+            loading={loading}
+            error={error}
+          />
         </div>
       </GoogleOAuthProvider>
     );
