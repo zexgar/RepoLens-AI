@@ -7,8 +7,8 @@ import {
 
 export function LibertyTrackerTerminal() {
   return (
-    <div className="relative">
-      {/* Full-height terminal without overflow restrictions */}
+    <div className="relative terminal-dissolve">
+      {/* Full terminal with dissolving effect */}
       <Terminal className="transform translate-y-0">
         <TypingAnimation className="text-blue-600 font-semibold">
           📊 &gt; liberty-tracker analyze --schedule daily
@@ -74,6 +74,22 @@ export function LibertyTrackerTerminal() {
         <TypingAnimation delay={7500} className="text-gray-600">
           🗽 Ready to reclaim your liberty? Start your journey today! 🌟
         </TypingAnimation>
+
+        {/* Additional content that will be dissolved */}
+        <AnimatedSpan delay={8000} className="text-blue-600">
+          <div className="space-y-1 mt-4">
+            <div>📈 WEEKLY TRENDS:</div>
+            <div className="pl-4 text-gray-700">Monday: 45% free time</div>
+            <div className="pl-4 text-gray-700">Tuesday: 72% free time</div>
+            <div className="pl-4 text-gray-700">Wednesday: 58% free time</div>
+          </div>
+        </AnimatedSpan>
+
+        <AnimatedSpan delay={8500} className="text-gray-500">
+          <div className="mt-4 text-center">
+            Continue scrolling to explore activity tracking...
+          </div>
+        </AnimatedSpan>
       </Terminal>
     </div>
   );
