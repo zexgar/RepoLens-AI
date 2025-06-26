@@ -24,7 +24,7 @@ const Terminal = ({ children, className, ...props }) => {
       </div>
 
       {/* Terminal Content */}
-      <div className="p-6 font-mono text-sm leading-relaxed min-h-[400px] max-h-[500px] overflow-hidden bg-white">
+      <div className="p-6 font-mono text-sm leading-relaxed min-h-[300px] max-h-[400px] overflow-hidden bg-white">
         {children}
       </div>
     </div>
