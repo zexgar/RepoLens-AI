@@ -4,6 +4,7 @@ import axios from "axios";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { HeroSection } from './components/ui/hero-section-dark';
 import { ActivityTokens } from './components/ui/activity-tokens';
+import { LibertyTrackerTerminal } from './components/ui/liberty-tracker-terminal';
 import { Calendar, TrendingUp, BarChart3, Clock, Users, CheckCircle2 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
