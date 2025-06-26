@@ -5,26 +5,26 @@ const Terminal = ({ children, className, ...props }) => {
   return (
     <div
       className={cn(
-        "relative w-full max-w-4xl mx-auto bg-gray-900 rounded-lg shadow-2xl border border-gray-700 overflow-hidden",
+        "relative w-full max-w-4xl mx-auto bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden",
         className
       )}
       {...props}
     >
       {/* Terminal Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+      <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200">
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 bg-red-500 rounded-full"></div>
           <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
           <div className="w-3 h-3 bg-green-500 rounded-full"></div>
         </div>
-        <div className="text-gray-400 text-sm font-mono">
-          Liberty Tracker Analysis Terminal
+        <div className="text-gray-700 text-sm font-mono font-medium">
+          🗽 Liberty Tracker Analysis Terminal 🎯
         </div>
         <div className="w-16"></div>
       </div>
 
       {/* Terminal Content */}
-      <div className="p-6 font-mono text-sm leading-relaxed min-h-[400px] max-h-[500px] overflow-hidden">
+      <div className="p-6 font-mono text-sm leading-relaxed min-h-[400px] max-h-[500px] overflow-hidden bg-white">
         {children}
       </div>
     </div>
@@ -72,7 +72,7 @@ const TypingAnimation = ({
   return (
     <div className={cn("block", className)} {...props}>
       {displayedText}
-      <span className="animate-pulse">│</span>
+      <span className="animate-pulse text-gray-800">│</span>
     </div>
   );
 };
