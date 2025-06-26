@@ -214,10 +214,30 @@ function App() {
             className="pb-0"
           />
 
-          {/* Activity Tokens Section */}
-          <section className="py-20 bg-gray-50">
-            <div className="max-w-6xl mx-auto px-4">
-              <div className="text-center mb-16">
+          {/* Enhanced Activity Tokens Section with FlickeringGrid Background */}
+          <section className="relative py-20 bg-gray-50 overflow-hidden">
+            {/* FlickeringGrid Background with Masking */}
+            <div className="absolute inset-0 opacity-20">
+              <FlickeringGrid
+                className="absolute inset-0 w-full h-full"
+                squareSize={3}
+                gridGap={8}
+                color="#3b82f6"
+                maxOpacity={0.4}
+                flickerChance={0.15}
+              />
+              {/* Gradient mask to reveal only certain areas */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-50/30 to-gray-50/80"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-gray-50/40 via-transparent to-gray-50/40"></div>
+            </div>
+
+            {/* Terminal emerging from top */}
+            <div className="absolute -top-32 left-1/2 transform -translate-x-1/2 z-30">
+              <LibertyTrackerTerminal />
+            </div>
+
+            <div className="max-w-6xl mx-auto px-4 relative z-20">
+              <div className="text-center mb-16 pt-32">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                   Track Your Daily <span className="section-gradient">Activities</span>
                 </h2>
