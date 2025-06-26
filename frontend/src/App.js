@@ -202,10 +202,7 @@ function App() {
             description="Transform your calendar chaos into clarity. Connect your Google Calendar to discover how much of your time is truly free and take control of your schedule."
             ctaText="Get Started Free"
             ctaHref="#auth-section"
-            bottomImage={{
-              light: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=400&fit=crop",
-              dark: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=400&fit=crop",
-            }}
+            terminalComponent={<LibertyTrackerTerminal />}
             gridOptions={{
               angle: 65,
               opacity: 0.3,
