@@ -262,9 +262,10 @@ test_plan:
     - "Activity tokens with icons and connecting lines"
     - "Dynamic Liberty Tracker gradient text"
     - "Hero section component integration"
-    - "Terminal animation component"
+    - "Interactive login component"
+    - "Clean activities section without terminal"
+    - "Updated font weights to medium"
     - "FlickeringGrid background integration"
-    - "Hero section title layout with emphasis"
     - "Responsive and accessible design"
   stuck_tasks: []
   test_all: true
@@ -272,4 +273,4 @@ test_plan:
 
 agent_communication:
   - agent: "main"
-    message: "Created stunning emerging terminal effect with FlickeringGrid background. Terminal is cut in half, positioned to emerge from section divider with gradient blending. FlickeringGrid provides animated background with masking and opacity effects. All visual effects properly integrated and ready for testing."
+    message: "Removed terminal from activities section and created stunning interactive login component inspired by pricing section. Features dynamic method selection between Google Calendar and Manual analysis with highlighted cards, badges, and feature lists. Updated typography to medium font weight. Clean, professional Liberty Tracker theming maintained throughout."
