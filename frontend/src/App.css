@@ -152,51 +152,43 @@
   }
 }
 
-/* Terminal emerging effects */
-.terminal-emerging-container {
+/* Flowing gradient button animation */
+.flowing-gradient-button {
   position: relative;
-  z-index: 30;
+  background: linear-gradient(90deg, #dc2626, #2563eb);
 }
 
-.terminal-emerging-container .terminal {
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+.flowing-gradient-button:hover .animate-gradient-flow {
+  animation: gradient-flow 2s ease-in-out infinite;
 }
 
-/* FlickeringGrid masking effects */
-.flickering-grid-masked {
-  mask-image: radial-gradient(
-    ellipse 80% 60% at 50% 40%,
-    black 20%,
-    transparent 70%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 80% 60% at 50% 40%,
-    black 20%,
-    transparent 70%
-  );
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-/* Enhanced section transitions */
-.section-transition {
-  position: relative;
-  overflow: hidden;
+/* Updated Liberty Tracker header layout */
+.liberty-tracker-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.section-transition::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(156, 163, 175, 0.3) 50%,
-    transparent 100%
-  );
+.liberty-tracker-header .flag {
+  font-size: 1.5rem; /* smaller */
+}
+
+.liberty-tracker-header .title {
+  font-size: 1.5rem; /* medium size */
+  font-weight: 500; /* medium weight */
 }
 
 /* Activity Token Animations */
