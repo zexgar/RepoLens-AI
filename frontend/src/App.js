@@ -291,8 +291,8 @@ function App() {
             </div>
           </section>
 
-          {/* Interactive Auth Section */}
-          <InteractiveLoginSection
+          {/* Clean Login Section */}
+          <CleanLoginSection
             onGoogleLogin={handleGoogleLogin}
             onGoogleLoginError={handleGoogleLoginError}
             onManualToggle={() => setShowManual(true)}
