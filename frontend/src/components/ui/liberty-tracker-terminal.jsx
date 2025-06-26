@@ -7,70 +7,76 @@ import {
 
 export function LibertyTrackerTerminal() {
   return (
-    <Terminal>
-      <TypingAnimation className="text-blue-400">
-        &gt; liberty-tracker analyze --schedule daily
-      </TypingAnimation>
+    <div className="relative">
+      <Terminal>
+        <TypingAnimation className="text-blue-600 font-semibold">
+          📊 &gt; liberty-tracker analyze --schedule daily
+        </TypingAnimation>
 
-      <AnimatedSpan delay={1500} className="text-green-400">
-        <span>🔍 Scanning your daily schedule...</span>
-      </AnimatedSpan>
+        <AnimatedSpan delay={1500} className="text-purple-600">
+          <span>🔍 Scanning your daily schedule...</span>
+        </AnimatedSpan>
 
-      <AnimatedSpan delay={2000} className="text-green-400">
-        <span>✔ Found 8 meetings scheduled</span>
-      </AnimatedSpan>
+        <AnimatedSpan delay={2000} className="text-green-600">
+          <span>✨ Found 8 meetings scheduled</span>
+        </AnimatedSpan>
 
-      <AnimatedSpan delay={2500} className="text-green-400">
-        <span>✔ Detected 2.5 hours of commute time</span>
-      </AnimatedSpan>
+        <AnimatedSpan delay={2500} className="text-green-600">
+          <span>🚗 Detected 2.5 hours of commute time</span>
+        </AnimatedSpan>
 
-      <AnimatedSpan delay={3000} className="text-green-400">
-        <span>✔ Identified 6 focus work blocks</span>
-      </AnimatedSpan>
+        <AnimatedSpan delay={3000} className="text-green-600">
+          <span>💼 Identified 6 focus work blocks</span>
+        </AnimatedSpan>
 
-      <AnimatedSpan delay={3500} className="text-green-400">
-        <span>✔ Analyzing break patterns...</span>
-      </AnimatedSpan>
+        <AnimatedSpan delay={3500} className="text-green-600">
+          <span>☕ Analyzing break patterns...</span>
+        </AnimatedSpan>
 
-      <AnimatedSpan delay={4000} className="text-yellow-400">
-        <span>⚡ Processing calendar data...</span>
-      </AnimatedSpan>
+        <AnimatedSpan delay={4000} className="text-amber-600">
+          <span>⚡ Processing calendar data...</span>
+        </AnimatedSpan>
 
-      <AnimatedSpan delay={4500} className="text-blue-400">
-        <span>📊 Calculating freedom percentage...</span>
-      </AnimatedSpan>
+        <AnimatedSpan delay={4500} className="text-blue-600">
+          <span>🧮 Calculating freedom percentage...</span>
+        </AnimatedSpan>
 
-      <AnimatedSpan delay={5000} className="text-purple-400">
-        <div className="space-y-1">
-          <div>📈 ANALYSIS COMPLETE</div>
-          <div className="pl-4 text-white">
-            → Time Freedom: <span className="text-green-400 font-bold">67%</span>
+        <AnimatedSpan delay={5000} className="text-purple-600">
+          <div className="space-y-1">
+            <div>🎉 ANALYSIS COMPLETE</div>
+            <div className="pl-4 text-gray-800">
+              → Time Freedom: <span className="text-green-600 font-bold">67% 🎯</span>
+            </div>
+            <div className="pl-4 text-gray-800">
+              → Longest free block: <span className="text-blue-600 font-semibold">3.5 hours ⏰</span>
+            </div>
+            <div className="pl-4 text-gray-800">
+              → Busiest period: <span className="text-red-600 font-semibold">2PM - 5PM 📈</span>
+            </div>
           </div>
-          <div className="pl-4 text-white">
-            → Longest free block: <span className="text-blue-400">3.5 hours</span>
+        </AnimatedSpan>
+
+        <AnimatedSpan delay={6000} className="text-cyan-600">
+          <div className="space-y-1">
+            <div>💡 OPTIMIZATION SUGGESTIONS:</div>
+            <div className="pl-4 text-gray-700">🏃‍♀️ Move morning workout to 6:30 AM</div>
+            <div className="pl-4 text-gray-700">📅 Batch meetings on Tuesday/Thursday</div>
+            <div className="pl-4 text-gray-700">🎯 Block 9-11 AM for deep work</div>
+            <div className="pl-4 text-gray-700">🍽️ Schedule lunch breaks consistently</div>
           </div>
-          <div className="pl-4 text-white">
-            → Busiest period: <span className="text-red-400">2PM - 5PM</span>
-          </div>
-        </div>
-      </AnimatedSpan>
+        </AnimatedSpan>
 
-      <AnimatedSpan delay={6000} className="text-cyan-400">
-        <div className="space-y-1">
-          <div>💡 OPTIMIZATION SUGGESTIONS:</div>
-          <div className="pl-4 text-gray-300">• Move morning workout to 6:30 AM</div>
-          <div className="pl-4 text-gray-300">• Batch meetings on Tuesday/Thursday</div>
-          <div className="pl-4 text-gray-300">• Block 9-11 AM for deep work</div>
-        </div>
-      </AnimatedSpan>
+        <TypingAnimation delay={7000} className="text-green-600 font-semibold">
+          🚀 Success! You could gain 2.3 hours of free time per day.
+        </TypingAnimation>
 
-      <TypingAnimation delay={7000} className="text-green-400">
-        🎯 Success! You could gain 2.3 hours of free time per day.
-      </TypingAnimation>
-
-      <TypingAnimation delay={7500} className="text-gray-400">
-        Ready to reclaim your liberty? Start your journey today.
-      </TypingAnimation>
-    </Terminal>
+        <TypingAnimation delay={7500} className="text-gray-600">
+          🗽 Ready to reclaim your liberty? Start your journey today! 🌟
+        </TypingAnimation>
+      </Terminal>
+      
+      {/* Gradient overlay to blend into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-white/50 to-white pointer-events-none"></div>
+    </div>
   );
 }
