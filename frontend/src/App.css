@@ -217,13 +217,13 @@
   gap: 0.75rem;
 }
 
-/* Terminal dissolving effect - Enhanced with multiple layers */
+/* Terminal dissolving effect - Enhanced with multiple layers and subtle animation */
 .terminal-dissolve {
   position: relative;
   overflow: hidden;
 }
 
-/* Primary dissolving gradient - stronger at the bottom */
+/* Primary dissolving gradient - stronger at the bottom with subtle pulse */
 .terminal-dissolve::after {
   content: '';
   position: absolute;
@@ -243,6 +243,7 @@
   );
   pointer-events: none;
   z-index: 50;
+  animation: dissolve-pulse 8s ease-in-out infinite;
 }
 
 /* Secondary dissolving layer for smoother transition */
@@ -262,6 +263,16 @@
   );
   pointer-events: none;
   z-index: 51;
+}
+
+/* Subtle dissolving animation */
+@keyframes dissolve-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+  }
 }
 
 /* Enhanced dissolving layers */
