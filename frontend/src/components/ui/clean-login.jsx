@@ -18,6 +18,7 @@ function CleanLoginSection({
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [imageErrors, setImageErrors] = useState({})
 
   // Slideshow images of people with good habits
   const slides = [
@@ -47,6 +48,16 @@ function CleanLoginSection({
       description: "Efficient meetings and productive teamwork"
     }
   ]
+
+  const handleImageError = (index, imagePath) => {
+    console.log(`Image failed to load: ${imagePath}`)
+    setImageErrors(prev => ({ ...prev, [index]: true }))
+  }
+
+  const handleImageLoad = (index, imagePath) => {
+    console.log(`Image loaded successfully: ${imagePath}`)
+    setImageErrors(prev => ({ ...prev, [index]: false }))
+  }
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length)
