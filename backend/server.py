@@ -521,38 +521,55 @@ async def analyze_calendar_auto(
 async def analyze_calendar(request: CalendarAnalysisRequest):
     """Manual calendar analysis with patriotic theme - Using mock analysis"""
     try:
-        # Parse the calendar data to extract events (simple parsing)
-        try:
-            events = []
-            for line in request.calendar_data.split('\n'):
-                if line.strip():  # Skip empty lines
-                    # Each line should be in format: "YYYY-MM-DD HH:MM AM/PM - HH:MM AM/PM: Event Name"
-                    # or "YYYY-MM-DD: Event Name (All day)"
-                    if '(All day)' in line:
-                        date = line.split(':')[0].strip()
+        # Parse the calendar data to extract events
+        events = []
+        lines = request.calendar_data.strip().split('\n')
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+                
+            try:
+                # Simple parsing for common formats
+                if ':' in line:
+                    # Try to extract time information
+                    if 'AM' in line or 'PM' in line:
+                        # Time-based event
+                        parts = line.split(':')
+                        time_part = parts[0].strip()
+                        event_name = ':'.join(parts[1:]).strip()
+                        
+                        # For mock purposes, create events with 1-hour duration
                         events.append({
-                            'start': datetime.strptime(date, '%Y-%m-%d'),
-                            'end': datetime.strptime(date, '%Y-%m-%d') + timedelta(days=1),
-                            'summary': line.split(':')[1].strip()
+                            'start': datetime.now(),
+                            'end': datetime.now() + timedelta(hours=1),
+                            'summary': event_name
                         })
                     else:
-                        parts = line.split(':')
-                        if len(parts) >= 2:
-                            date_time = parts[0].strip()
-                            date = date_time.split(' ')[0]
-                            times = date_time.split(' ', 1)[1].split(' - ')
-                            
-                            start_str = f"{date} {times[0]}"
-                            end_str = f"{date} {times[1]}"
-                            
-                            events.append({
-                                'start': datetime.strptime(start_str, '%Y-%m-%d %I:%M %p'),
-                                'end': datetime.strptime(end_str, '%Y-%m-%d %I:%M %p'),
-                                'summary': ':'.join(parts[1:]).strip()
-                            })
-        except Exception as e:
-            logging.warning(f"Error parsing calendar data: {str(e)}")
-            # If parsing fails, create a mock event
+                        # All-day or simple event
+                        events.append({
+                            'start': datetime.now(),
+                            'end': datetime.now() + timedelta(hours=2),
+                            'summary': line
+                        })
+                else:
+                    # Simple event description
+                    events.append({
+                        'start': datetime.now(),
+                        'end': datetime.now() + timedelta(hours=1),
+                        'summary': line
+                    })
+            except Exception:
+                # If parsing fails for this line, create a default event
+                events.append({
+                    'start': datetime.now(),
+                    'end': datetime.now() + timedelta(hours=1),
+                    'summary': line
+                })
+        
+        # If no events were parsed, create a default one
+        if not events:
             events = [{
                 'start': datetime.now(),
                 'end': datetime.now() + timedelta(hours=1),
