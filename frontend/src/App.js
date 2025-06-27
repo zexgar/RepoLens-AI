@@ -275,41 +275,21 @@ Example:
                 </div>
               )}
 
-              {/* Square CTA Button with Fluid Gradient Effect */}
+              {/* Square CTA Button with Advanced Fluid Gradient Effect */}
               <div className="flex justify-center">
                 <button
                   onClick={analyzeCalendarManual}
                   disabled={loading || !calendarData.trim()}
-                  className="w-full py-4 px-8 font-semibold rounded-2xl transition-all duration-500 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50 shadow-lg border border-gray-200 text-white relative overflow-hidden group"
-                  style={{
-                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%)',
-                    backgroundSize: '200% 200%',
-                    backgroundPosition: '0% 50%',
-                    transition: 'background-position 0.5s ease, transform 0.3s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!loading && calendarData.trim()) {
-                      e.target.style.backgroundPosition = '100% 50%';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundPosition = '0% 50%';
-                  }}
+                  className="w-full py-4 px-8 font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50 shadow-lg border border-gray-200 text-white fluid-gradient-button"
                 >
-                  {/* Overlay gradient for hover effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                  
-                  {/* Button content */}
-                  <span className="relative z-10">
-                    {loading ? (
-                      <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
-                        Calculating Your Freedom...
-                      </div>
-                    ) : (
-                      "Calculate My Time Freedom"
-                    )}
-                  </span>
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
+                      Calculating Your Freedom...
+                    </div>
+                  ) : (
+                    "Calculate My Time Freedom"
+                  )}
                 </button>
               </div>
             </div>
