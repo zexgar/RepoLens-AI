@@ -159,8 +159,13 @@
   animation: fluid-gradient 8s ease infinite;
 }
 
-.fluid-gradient-button:hover {
+.fluid-gradient-button:hover:not(:disabled) {
   animation: fluid-gradient-hover 2s ease infinite;
+}
+
+.fluid-gradient-button:disabled {
+  background: linear-gradient(135deg, #9ca3af, #6b7280) !important;
+  animation: none !important;
 }
 
 @keyframes fluid-gradient {
