@@ -100,19 +100,15 @@ const HeroSection = React.forwardRef(
           </div>
         </section>
         
-        {/* Extended Gradient Section with Terminal - Same Layout as Hero Text */}
+        {/* Terminal Section - Prominently positioned */}
         {terminalComponent && (
-          <div className="relative bg-gradient-to-b from-white via-gray-50 to-gray-50 pb-32">
-            {/* Terminal positioned with same layout as hero text */}
-            <div className="relative z-20 max-w-screen-xl mx-auto px-4 gap-12 md:px-8">
-              <div className="max-w-4xl mx-auto text-center">
+          <div className="relative bg-white pb-16">
+            {/* Terminal centered and prominent */}
+            <div className="relative z-20 max-w-5xl mx-auto px-4 md:px-8">
+              <div className="max-w-4xl mx-auto">
                 {terminalComponent}
               </div>
             </div>
-            
-            {/* Enhanced dissolving fade gradient overlay - coordinates with terminal-dissolve */}
-            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-gray-50/40 to-gray-50 pointer-events-none z-25"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent via-gray-50/80 to-gray-50 pointer-events-none z-30"></div>
           </div>
         )}
       </div>
