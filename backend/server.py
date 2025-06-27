@@ -519,90 +519,123 @@ async def analyze_calendar_auto(
 
 @api_router.post("/analyze-calendar", response_model=CalendarAnalysisResponse)
 async def analyze_calendar(request: CalendarAnalysisRequest):
-    """Manual calendar analysis with patriotic theme"""
+    """Manual calendar analysis with patriotic theme - Using mock analysis"""
     try:
-        if not openai_api_key:
-            raise HTTPException(status_code=500, detail="OpenAI API key not configured")
-        
-        # Create the AI prompt for analyzing time freedom (4th of July themed)
-        prompt = f"""
-        You are a patriotic AI assistant that analyzes people's schedules to calculate their "time freedom" level for Independence Day. Channel the spirit of American liberty and independence!
-
-        Schedule Data for {request.time_period}:
-        {request.calendar_data}
-
-        Please analyze this schedule data and provide a patriotic assessment of their time freedom:
-        1. A "time freedom percentage" (0-100%) - higher means more independent/free time
-        2. A witty, patriotic message about their freedom situation (like "You're 76% free! Declare independence from your packed schedule!")
-        3. Detailed analysis of their time patterns with Independence Day spirit
-        4. Basic schedule statistics (total commitments, hours occupied, etc.)
-        5. 3-5 actionable recommendations to increase time freedom
-
-        Consider factors like:
-        - Schedule density and freedom gaps
-        - Back-to-back commitments
-        - Time blocks for personal liberty
-        - Free time for pursuing happiness
-
-        Use patriotic language, references to American independence, liberty, freedom, and the pursuit of happiness. Be inspiring and motivational while maintaining the witty analysis style.
-
-        Respond in JSON format:
-        {{
-            "independence_percentage": <number>,
-            "witty_message": "<patriotic/witty message about time freedom>",
-            "detailed_analysis": "<2-3 paragraph analysis with patriotic spirit>",
-            "meeting_stats": {{
-                "total_meetings": <number>,
-                "total_hours": <number>,
-                "avg_meeting_length": <number>,
-                "longest_meeting_free_block": "<description>"
-            }},
-            "recommendations": ["<recommendation 1>", "<recommendation 2>", ...]
-        }}
-        """
-
-        # Call OpenAI API
-        client = openai.OpenAI(api_key=openai_api_key)
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a patriotic time freedom calculator that helps people realize how much liberty they have in their schedules. Use American independence themes and be inspiring while witty."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.8,
-            max_tokens=1000
-        )
-
-        # Parse the AI response
-        ai_response = response.choices[0].message.content
-        
-        # Try to extract JSON from the response
+        # Parse the calendar data to extract events (simple parsing)
         try:
-            # Find JSON in the response
-            start_idx = ai_response.find('{')
-            end_idx = ai_response.rfind('}') + 1
-            json_str = ai_response[start_idx:end_idx]
-            result = json.loads(json_str)
-        except:
-            # Fallback if JSON parsing fails
-            result = {
-                "independence_percentage": 50,
-                "witty_message": "You're 50% free - halfway to independence! Time to stage a revolution against your packed schedule.",
-                "detailed_analysis": "Your schedule shows a mixed relationship with time freedom. Like the colonies before independence, you're experiencing some autonomy but still bound by numerous commitments. It's time to declare independence from unnecessary obligations and pursue the happiness that comes with free time!",
-                "meeting_stats": {
-                    "total_meetings": "Several",
-                    "total_hours": "Too many",
-                    "avg_meeting_length": "Longer than a Boston Tea Party",
-                    "longest_meeting_free_block": "Shorter than you deserve"
-                },
-                "recommendations": [
-                    "Declare independence from unnecessary commitments",
-                    "Fight for your right to free time like patriots fought for freedom",
-                    "Block out time for the pursuit of happiness"
-                ]
-            }
+            events = []
+            for line in request.calendar_data.split('\n'):
+                if line.strip():  # Skip empty lines
+                    # Each line should be in format: "YYYY-MM-DD HH:MM AM/PM - HH:MM AM/PM: Event Name"
+                    # or "YYYY-MM-DD: Event Name (All day)"
+                    if '(All day)' in line:
+                        date = line.split(':')[0].strip()
+                        events.append({
+                            'start': datetime.strptime(date, '%Y-%m-%d'),
+                            'end': datetime.strptime(date, '%Y-%m-%d') + timedelta(days=1),
+                            'summary': line.split(':')[1].strip()
+                        })
+                    else:
+                        parts = line.split(':')
+                        if len(parts) >= 2:
+                            date_time = parts[0].strip()
+                            date = date_time.split(' ')[0]
+                            times = date_time.split(' ', 1)[1].split(' - ')
+                            
+                            start_str = f"{date} {times[0]}"
+                            end_str = f"{date} {times[1]}"
+                            
+                            events.append({
+                                'start': datetime.strptime(start_str, '%Y-%m-%d %I:%M %p'),
+                                'end': datetime.strptime(end_str, '%Y-%m-%d %I:%M %p'),
+                                'summary': ':'.join(parts[1:]).strip()
+                            })
+        except Exception as e:
+            logging.warning(f"Error parsing calendar data: {str(e)}")
+            # If parsing fails, create a mock event
+            events = [{
+                'start': datetime.now(),
+                'end': datetime.now() + timedelta(hours=1),
+                'summary': 'Sample Event'
+            }]
+        
+        # Mock Analysis - Generate realistic results based on schedule data
+        total_events = len(events)
+        total_hours = sum((event['end'] - event['start']).total_seconds() / 3600 for event in events)
+        
+        # Calculate freedom percentage based on actual data
+        if request.time_period.lower() in ['today', 'recent days']:
+            available_hours = 16  # Assume 16 waking hours
+        elif 'week' in request.time_period.lower():
+            available_hours = 112  # 16 hours * 7 days
+        elif 'month' in request.time_period.lower():
+            available_hours = 480  # 16 hours * 30 days
+        else:
+            available_hours = 112
+            
+        occupied_percentage = min((total_hours / available_hours) * 100, 100) if available_hours > 0 else 0
+        freedom_percentage = max(100 - occupied_percentage, 10)
+        
+        # Generate dynamic mock response based on actual schedule data
+        if freedom_percentage >= 70:
+            witty_message = f"🎆 Outstanding! You're {int(freedom_percentage)}% free! You've mastered the art of schedule independence!"
+            analysis = f"Bravo, time freedom champion! With {int(freedom_percentage)}% liberty, you're living the American dream of perfect work-life balance. Your {total_events} commitments are strategically placed, giving you ample time for the pursuit of happiness. Like a true patriot, you've successfully declared independence from over-scheduling. The founding fathers would be proud of your time sovereignty - you understand that true freedom includes having control over your own schedule!"
+        elif freedom_percentage >= 40:
+            witty_message = f"⚡ Solid work! You're {int(freedom_percentage)}% free - on your way to schedule liberation!"
+            analysis = f"You're making great progress on your journey to time independence! At {int(freedom_percentage)}% freedom, you're like America in its early days - establishing your independence but still working on perfecting it. Your {total_events} scheduled items show you're productive while maintaining some personal liberty. The path to time freedom is clear ahead - just a few more strategic decisions and you'll be living the schedule of a true free American!"
+        else:
+            witty_message = f"🚨 Time for revolution! You're only {int(freedom_percentage)}% free - let's stage a rebellion against your packed schedule!"
+            analysis = f"Fellow American, your schedule needs a Declaration of Independence! At just {int(freedom_percentage)}% liberty, you're more bound than the colonies were before 1776. Your {total_events} commitments are staging a tyrannical rule over your free time. But remember - every great revolution starts with recognizing the problem. It's time to channel your inner revolutionary spirit and fight for your right to free time. Life, liberty, and the pursuit of happiness - not endless back-to-back meetings!"
+        
+        # Calculate realistic stats
+        avg_duration = total_hours / max(total_events, 1)
+        longest_gap = "2-3 hours" if freedom_percentage > 60 else "1-2 hours" if freedom_percentage > 30 else "30-60 minutes"
+        
+        # Generate recommendations based on freedom level
+        recommendations = []
+        if freedom_percentage < 40:
+            recommendations = [
+                "Audit your commitments like the Continental Congress - question everything",
+                "Create 'Constitutional Hours' - time blocks that are sacred and unschedulable",
+                "Practice the Boston Tea Party approach - dump unnecessary commitments",
+                "Establish a personal Bill of Rights that includes the right to free time",
+                "Build buffer zones between commitments to prevent schedule tyranny"
+            ]
+        elif freedom_percentage < 70:
+            recommendations = [
+                "Batch similar activities for efficiency like organizing a constitutional convention",
+                "Block out 'pursuit of happiness' time for hobbies and personal interests",
+                "Delegate tasks using the Jefferson method - empower others to help",
+                "Create consistent 'independence hours' for uninterrupted personal time",
+                "Practice strategic 'no' like ratifying amendments - carefully but decisively"
+            ]
+        else:
+            recommendations = [
+                "You're doing excellent! Keep protecting your time freedom",
+                "Share your schedule wisdom like a founding father sharing liberty principles",
+                "Use your abundant free time for meaningful relationships and pursuits",
+                "Consider mentoring others in achieving their own time independence",
+                "Keep vigilant about maintaining your boundaries like defending the Constitution"
+            ]
+        
+        result = {
+            "independence_percentage": int(freedom_percentage),
+            "witty_message": witty_message,
+            "detailed_analysis": analysis,
+            "meeting_stats": {
+                "total_meetings": total_events,
+                "total_hours": f"{total_hours:.1f}",
+                "avg_meeting_length": f"{avg_duration:.1f} hours" if avg_duration >= 1 else f"{int(avg_duration * 60)} minutes",
+                "longest_meeting_free_block": longest_gap
+            },
+            "recommendations": recommendations[:5]  # Limit to 5 recommendations
+        }
 
         return CalendarAnalysisResponse(**result)
+
+    except Exception as e:
+        logging.error(f"Error analyzing calendar: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
     except Exception as e:
         logging.error(f"Error analyzing calendar: {str(e)}")
