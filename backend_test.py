@@ -273,17 +273,63 @@ def main():
     google_auth_url_test_passed = tester.test_google_calendar_auth_url()
     google_auth_test_passed = tester.test_google_auth(fake_token)
     
-    print("\n===== TESTING CALENDAR ANALYSIS =====")
+    print("\n===== TESTING MANUAL CALENDAR ANALYSIS WITH MOCK IMPLEMENTATION =====")
     analyze_test_passed = tester.test_analyze_calendar(sample_calendar_data)
     
     # Test with different time periods
-    time_periods = ["today", "this_week", "this_month", "recent_days"]
+    time_periods = ["today", "this week", "this month"]
     time_period_tests_passed = []
     
     for period in time_periods:
         print(f"\n🔍 Testing with time period: {period}")
         result = tester.test_analyze_calendar(sample_calendar_data, period)
         time_period_tests_passed.append(result)
+    
+    # Test with different calendar data formats
+    print("\n===== TESTING DIFFERENT CALENDAR DATA FORMATS =====")
+    
+    # Format 1: Simple list of events without times
+    simple_format = """
+    Team Meeting
+    Project Review
+    Client Call
+    """
+    print("\n🔍 Testing with simple event list (no times):")
+    simple_format_test = tester.test_analyze_calendar(simple_format)
+    
+    # Format 2: Different time format
+    different_time_format = """
+    9am-10am: Morning Standup
+    12pm-1pm: Lunch with Client
+    3pm-5pm: Product Development
+    """
+    print("\n🔍 Testing with different time format:")
+    different_time_format_test = tester.test_analyze_calendar(different_time_format)
+    
+    # Format 3: Date included
+    with_date_format = """
+    2023-06-01 9:00 AM - 10:00 AM: Quarterly Planning
+    2023-06-02 2:00 PM - 3:00 PM: Team Building
+    2023-06-03 All Day: Company Retreat
+    """
+    print("\n🔍 Testing with dates included:")
+    with_date_format_test = tester.test_analyze_calendar(with_date_format)
+    
+    # Test error cases
+    print("\n===== TESTING ERROR CASES =====")
+    
+    # Empty calendar data
+    print("\n🔍 Testing with empty calendar data:")
+    empty_data_test = tester.test_analyze_calendar("", "this week")
+    
+    # Malformed data
+    malformed_data = "This is not properly formatted calendar data without any time information"
+    print("\n🔍 Testing with malformed calendar data:")
+    malformed_data_test = tester.test_analyze_calendar(malformed_data)
+    
+    # Invalid time period
+    print("\n🔍 Testing with invalid time period:")
+    invalid_period_test = tester.test_analyze_calendar(sample_calendar_data, "invalid_period")
     
     # Test auto analysis (will fail with 401 but we want to verify the endpoint exists)
     auto_analysis_test_passed = tester.test_analyze_calendar_auto()
@@ -298,31 +344,22 @@ def main():
     print(f"Google Auth Endpoint: {'✅' if google_auth_test_passed else '❌'}")
     print(f"Manual Calendar Analysis: {'✅' if analyze_test_passed else '❌'}")
     print(f"Time Period Testing: {'✅' if all(time_period_tests_passed) else '❌'}")
+    print(f"Different Calendar Formats: {'✅' if all([simple_format_test, different_time_format_test, with_date_format_test]) else '❌'}")
+    print(f"Error Case Handling: {'✅' if all([empty_data_test, malformed_data_test, invalid_period_test]) else '❌'}")
     print(f"Auto Calendar Analysis Endpoint: {'✅' if auto_analysis_test_passed else '❌'}")
     
     # Overall assessment
     all_tests_passed = (root_test_passed and google_auth_url_test_passed and 
                         google_auth_test_passed and analyze_test_passed and 
-                        all(time_period_tests_passed) and auto_analysis_test_passed)
+                        all(time_period_tests_passed) and auto_analysis_test_passed and
+                        all([simple_format_test, different_time_format_test, with_date_format_test]) and
+                        all([empty_data_test, malformed_data_test, invalid_period_test]))
     
     if all_tests_passed:
         print("\n✅ All API tests passed successfully!")
+        print("\n✅ Mock calendar analysis is working correctly - no OpenAI API dependency!")
     else:
-        print("\n⚠️ Some API tests failed or returned expected errors. See details above.")
-        
-        # Check if failures are only due to expected errors in test environment
-        expected_failures = False
-        if not analyze_test_passed or not all(time_period_tests_passed):
-            if "invalid_api_key" in tester.last_error:
-                expected_failures = True
-                print("\n✅ NOTE: Calendar analysis failures are due to invalid OpenAI API key, which is expected in test environment")
-        
-        if not auto_analysis_test_passed and "Not authenticated" in tester.last_error:
-            expected_failures = True
-            print("\n✅ NOTE: Auto analysis failures are due to authentication requirements, which is expected in test environment")
-            
-        if expected_failures:
-            print("\n✅ All API endpoints are structurally correct, failures are only due to expected authentication/API key issues")
+        print("\n⚠️ Some API tests failed. See details above.")
     
     return 0 if tester.tests_passed > 0 else 1
 
