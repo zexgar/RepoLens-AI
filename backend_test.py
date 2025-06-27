@@ -37,6 +37,10 @@ class LibertyTrackerAPITester:
                 "Not authenticated": (403, 401)
             }
             
+            # Store the response text for error analysis
+            if response.text:
+                self.last_error = response.text
+            
             # Check if this is a special case
             for error_text, (actual, expected) in special_cases.items():
                 if response.status_code == actual and error_text in response.text:
@@ -64,6 +68,7 @@ class LibertyTrackerAPITester:
                 
         except Exception as e:
             print(f"❌ Failed - Error: {str(e)}")
+            self.last_error = str(e)
             return False, {}
 
     def test_root_endpoint(self):
