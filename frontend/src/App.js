@@ -471,10 +471,7 @@ Example:
             <CleanLoginSection
               onGoogleLogin={handleGoogleLogin}
               onGoogleLoginError={handleGoogleLoginError}
-              onManualToggle={() => {
-                console.log("Manual toggle clicked!");
-                setShowManual(true);
-              }}
+              onManualToggle={() => setShowManual(true)}
               loading={loading}
               error={error}
             />
