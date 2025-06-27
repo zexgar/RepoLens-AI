@@ -5,7 +5,7 @@ const Terminal = ({ children, className, ...props }) => {
   return (
     <div
       className={cn(
-        "relative w-full max-w-4xl mx-auto bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden",
+        "relative w-full mx-auto bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden",
         className
       )}
       {...props}
