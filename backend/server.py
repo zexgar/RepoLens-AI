@@ -439,87 +439,77 @@ async def analyze_calendar_auto(
                 ]
             )
         
-        # Analyze with AI
-        if not openai_api_key:
-            raise HTTPException(status_code=500, detail="OpenAI API key not configured")
+        # Mock Analysis - Generate realistic results based on schedule data
+        total_events = len(events)
+        total_hours = sum((event['end'] - event['start']).total_seconds() / 3600 for event in events)
         
-        # Create the AI prompt for analyzing time freedom (4th of July themed)
-        prompt = f"""
-        You are a patriotic AI assistant that analyzes people's schedules to calculate their "time freedom" level for Independence Day. Channel the spirit of American liberty and independence!
-
-        Schedule Data for {time_period}:
-        {calendar_data}
-
-        Please analyze this schedule data and provide a patriotic assessment of their time freedom:
-        1. A "time freedom percentage" (0-100%) - higher means more independent/free time
-        2. A witty, patriotic message about their freedom situation (like "You're 76% free! Declare independence from your packed schedule!")
-        3. Detailed analysis of their time patterns with Independence Day spirit
-        4. Basic schedule statistics (total commitments, hours occupied, etc.)
-        5. 3-5 actionable recommendations to increase time freedom
-
-        Consider factors like:
-        - Schedule density and freedom gaps
-        - Back-to-back commitments
-        - Time blocks for personal liberty
-        - Free time for pursuing happiness
-
-        Use patriotic language, references to American independence, liberty, freedom, and the pursuit of happiness. Be inspiring and motivational while maintaining the witty analysis style.
-
-        Respond in JSON format:
-        {{
-            "independence_percentage": <number>,
-            "witty_message": "<patriotic/witty message about time freedom>",
-            "detailed_analysis": "<2-3 paragraph analysis with patriotic spirit>",
-            "meeting_stats": {{
-                "total_meetings": <number>,
-                "total_hours": <number>,
-                "avg_meeting_length": <number>,
-                "longest_meeting_free_block": "<description>"
-            }},
-            "recommendations": ["<recommendation 1>", "<recommendation 2>", ...]
-        }}
-        """
-
-        # Call OpenAI API
-        client = openai.OpenAI(api_key=openai_api_key)
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a patriotic time freedom calculator that helps people realize how much liberty they have in their schedules. Use American independence themes and be inspiring while witty."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.8,
-            max_tokens=1000
-        )
-
-        # Parse the AI response
-        ai_response = response.choices[0].message.content
+        # Calculate freedom percentage based on actual data
+        if time_period.lower() in ['today', 'recent days']:
+            available_hours = 16  # Assume 16 waking hours
+        elif 'week' in time_period.lower():
+            available_hours = 112  # 16 hours * 7 days
+        elif 'month' in time_period.lower():
+            available_hours = 480  # 16 hours * 30 days
+        else:
+            available_hours = 112
+            
+        occupied_percentage = min((total_hours / available_hours) * 100, 100)
+        freedom_percentage = max(100 - occupied_percentage, 10)
         
-        # Try to extract JSON from the response
-        try:
-            # Find JSON in the response
-            start_idx = ai_response.find('{')
-            end_idx = ai_response.rfind('}') + 1
-            json_str = ai_response[start_idx:end_idx]
-            result = json.loads(json_str)
-        except:
-            # Fallback if JSON parsing fails
-            result = {
-                "independence_percentage": 50,
-                "witty_message": "You're 50% free - halfway to independence! Time to stage a revolution against your packed schedule.",
-                "detailed_analysis": "Your schedule shows a mixed relationship with time freedom. Like the colonies before independence, you're experiencing some autonomy but still bound by numerous commitments. It's time to declare independence from unnecessary obligations and pursue the happiness that comes with free time!",
-                "meeting_stats": {
-                    "total_meetings": len(events),
-                    "total_hours": "Too many",
-                    "avg_meeting_length": "Longer than a Boston Tea Party",
-                    "longest_meeting_free_block": "Shorter than you deserve"
-                },
-                "recommendations": [
-                    "Declare independence from unnecessary commitments",
-                    "Fight for your right to free time like patriots fought for freedom",
-                    "Block out time for the pursuit of happiness"
-                ]
-            }
+        # Generate dynamic mock response based on actual schedule data
+        if freedom_percentage >= 70:
+            witty_message = f"🎆 Amazing! You're {int(freedom_percentage)}% free! You've achieved true independence from schedule tyranny!"
+            analysis = f"Congratulations, you patriotic time manager! With {int(freedom_percentage)}% freedom, you're living the American dream of work-life balance. Your schedule shows excellent time sovereignty - you've successfully declared independence from over-scheduling. Like the founding fathers intended, you have ample time for the pursuit of happiness. Your {total_events} commitments are well-spaced, allowing for spontaneous adventures and personal liberty. This level of freedom would make Benjamin Franklin proud!"
+        elif freedom_percentage >= 40:
+            witty_message = f"⚡ Good news! You're {int(freedom_percentage)}% free - that's a solid B+ in the school of liberty!"
+            analysis = f"You're on the path to time independence! With {int(freedom_percentage)}% freedom, you're like America in 1776 - ready to break free but still working on it. Your {total_events} scheduled commitments show you're productive, but you still have room to breathe. The founding fathers would approve of your balanced approach to duty and liberty. Consider this your Declaration of Improved Time Management - you're doing well, but there's still room to pursue more happiness!"
+        else:
+            witty_message = f"🚨 Alert! You're only {int(freedom_percentage)}% free - time to stage a revolution against your packed schedule!"
+            analysis = f"Houston, we have a freedom problem! At {int(freedom_percentage)}% liberty, you're more scheduled than a presidential campaign. Your {total_events} commitments are staging a coup against your free time. But fear not, fellow American - every great revolution starts with recognizing the problem. It's time to channel your inner George Washington and lead a rebellion against over-scheduling. Remember: life, liberty, and the pursuit of happiness - not just endless meetings!"
+        
+        # Calculate realistic stats
+        avg_duration = total_hours / max(total_events, 1)
+        longest_gap = "2-3 hours" if freedom_percentage > 60 else "1-2 hours" if freedom_percentage > 30 else "30-60 minutes"
+        
+        # Generate recommendations based on freedom level
+        recommendations = []
+        if freedom_percentage < 40:
+            recommendations = [
+                "Declare independence from unnecessary meetings - audit your commitments",
+                "Block 'Constitution Hours' - sacred time blocks that cannot be scheduled over",
+                "Practice the Boston Tea Party method - dump commitments that don't serve you",
+                "Implement the Bill of Rights for your calendar - right to free time",
+                "Create buffer zones between meetings like DMZ between conflicts"
+            ]
+        elif freedom_percentage < 70:
+            recommendations = [
+                "Batch similar activities like the Continental Congress - efficiency through grouping",
+                "Establish 'pursuit of happiness' time blocks for hobbies and relaxation",
+                "Use the Jefferson method - delegate tasks that others can handle",
+                "Create morning or evening 'independence hours' for personal time",
+                "Practice saying 'no' like you're ratifying the Constitution - carefully but firmly"
+            ]
+        else:
+            recommendations = [
+                "You're doing great! Maintain your freedom with regular schedule audits",
+                "Share your time management wisdom like a founding father",
+                "Use your free time for meaningful pursuits and relationships",
+                "Consider mentoring others in the art of schedule liberation",
+                "Keep defending your boundaries like patriots defended their liberty"
+            ]
+        
+        result = {
+            "independence_percentage": int(freedom_percentage),
+            "witty_message": witty_message,
+            "detailed_analysis": analysis,
+            "meeting_stats": {
+                "total_meetings": total_events,
+                "total_hours": f"{total_hours:.1f}",
+                "avg_meeting_length": f"{avg_duration:.1f} hours" if avg_duration >= 1 else f"{int(avg_duration * 60)} minutes",
+                "longest_meeting_free_block": longest_gap
+            },
+            "recommendations": recommendations[:5]  # Limit to 5 recommendations
+        }
 
         return CalendarAnalysisResponse(**result)
 
