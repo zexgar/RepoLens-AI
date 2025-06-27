@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-image { max-width: 200px; margin: 10px; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Liberty Tracker - Image Upload Test</h1>
+    <p>This page helps test if images are properly uploaded to the Assets folder.</p>
+    
+    <div id="results"></div>
+    
+    <script>
+        const images = [
+            'morning-routine.jpg',
+            'focused-work.jpg',
+            'time-management.jpg',
+            'mindful-planning.jpg',
+            'team-collaboration.jpg'
+        ];
+        
+        const resultsDiv = document.getElementById('results');
+        
+        images.forEach(imageName => {
+            const img = new Image();
+            const div = document.createElement('div');
+            div.innerHTML = `<h3>Testing: ${imageName}</h3>`;
+            
+            img.onload = function() {
+                div.innerHTML += `<p class="success">✅ Image loaded successfully!</p>`;
+                div.innerHTML += `<img src="/Assets/${imageName}" class="test-image" alt="${imageName}">`;
+            };
+            
+            img.onerror = function() {
+                div.innerHTML += `<p class="error">❌ Image failed to load from /Assets/${imageName}</p>`;
+            };
+            
+            img.src = `/Assets/${imageName}`;
+            resultsDiv.appendChild(div);
+        });
+    </script>
+</body>
+</html>
