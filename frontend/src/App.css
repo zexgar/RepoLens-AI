@@ -217,28 +217,51 @@
   gap: 0.75rem;
 }
 
-/* Terminal dissolving effect */
+/* Terminal dissolving effect - Enhanced with multiple layers */
 .terminal-dissolve {
   position: relative;
+  overflow: hidden;
 }
 
+/* Primary dissolving gradient - stronger at the bottom */
 .terminal-dissolve::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 120px;
+  height: 150px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(249, 250, 251, 0.1) 20%,
-    rgba(249, 250, 251, 0.4) 50%,
-    rgba(249, 250, 251, 0.8) 80%,
+    rgba(249, 250, 251, 0.05) 10%,
+    rgba(249, 250, 251, 0.15) 25%,
+    rgba(249, 250, 251, 0.35) 45%,
+    rgba(249, 250, 251, 0.65) 65%,
+    rgba(249, 250, 251, 0.85) 80%,
     rgb(249, 250, 251) 100%
   );
   pointer-events: none;
   z-index: 50;
+}
+
+/* Secondary dissolving layer for smoother transition */
+.terminal-dissolve::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(249, 250, 251, 0.2) 30%,
+    rgba(249, 250, 251, 0.6) 70%,
+    rgb(249, 250, 251) 100%
+  );
+  pointer-events: none;
+  z-index: 51;
 }
 
 /* Enhanced dissolving layers */
