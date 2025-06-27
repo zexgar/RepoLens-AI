@@ -132,7 +132,7 @@ const HeroSection = React.forwardRef(
             
             {/* Terminal layered over the FlickeringGrid - Responsive 70% device width */}
             <div className="relative z-20 flex justify-center px-4 md:px-8">
-              <div className="w-[70vw] min-w-[320px] max-w-[1200px]">
+              <div className="terminal-container">
                 {terminalComponent}
               </div>
             </div>
