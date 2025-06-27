@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { 
   Calendar, 
   Clock, 
@@ -18,30 +18,39 @@ import { cn } from "../../lib/utils";
 const ActivityTokens = ({ className }) => {
   const [containerSize, setContainerSize] = useState({ width: 800, height: 256 });
 
-  useEffect(() => {
-    const updateContainerSize = () => {
-      // Get responsive container dimensions based on screen size
-      const screenWidth = window.innerWidth;
-      let width, height;
-      
-      if (screenWidth < 640) { // Mobile
-        width = screenWidth - 32; // Account for padding
-        height = 256;
-      } else if (screenWidth < 1024) { // Tablet
-        width = Math.min(screenWidth * 0.8, 800);
-        height = 256;
-      } else { // Desktop
-        width = Math.min(screenWidth * 0.7, 1000);
-        height = 256;
-      }
-      
-      setContainerSize({ width, height });
+  // Debounced resize handler for better performance
+  const debouncedResize = useCallback(() => {
+    let timeoutId;
+    return () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const screenWidth = window.innerWidth;
+        let width, height = 256;
+        
+        if (screenWidth < 640) {
+          width = Math.max(screenWidth - 32, 320); // Minimum width for mobile
+        } else if (screenWidth < 1024) {
+          width = Math.min(screenWidth * 0.8, 800);
+        } else {
+          width = Math.min(screenWidth * 0.7, 1000);
+        }
+        
+        setContainerSize({ width, height });
+      }, 150); // 150ms debounce
     };
-
-    updateContainerSize();
-    window.addEventListener('resize', updateContainerSize);
-    return () => window.removeEventListener('resize', updateContainerSize);
   }, []);
+
+  useEffect(() => {
+    const handleResize = debouncedResize();
+    
+    // Initial calculation
+    handleResize();
+    
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [debouncedResize]);
 
   const activities = [
     { icon: Briefcase, label: 'Work', color: 'bg-blue-100 border-blue-300 text-blue-700', delay: 0 },
@@ -56,14 +65,12 @@ const ActivityTokens = ({ className }) => {
     { icon: Phone, label: 'Social', color: 'bg-teal-100 border-teal-300 text-teal-700', delay: 4.5 },
   ];
 
-  // Calculate responsive path coordinates
-  const { width, height } = containerSize;
-  const centerY = height / 2;
-  const quarterHeight = height / 4;
-  
-  // Generate responsive connecting paths
-  const getResponsivePaths = () => {
-    const segments = 6; // Number of path segments
+  // Memoized path calculations - only recalculates when containerSize changes
+  const responsivePaths = useMemo(() => {
+    const { width, height } = containerSize;
+    const centerY = height / 2;
+    const quarterHeight = height / 4;
+    const segments = 6;
     const segmentWidth = width / segments;
     
     return {
@@ -73,16 +80,28 @@ const ActivityTokens = ({ className }) => {
       
       bottomPath: `M ${segmentWidth * 0.75} ${centerY + quarterHeight} Q ${segmentWidth * 2} ${centerY} ${segmentWidth * 3} ${centerY + quarterHeight} Q ${segmentWidth * 4} ${centerY + quarterHeight * 1.5} ${segmentWidth * 5.25} ${centerY + quarterHeight}`
     };
-  };
+  }, [containerSize]);
 
-  const responsivePaths = getResponsivePaths();
+  // Memoized token positions to prevent recalculation
+  const tokenPositions = useMemo(() => [
+    { left: '5%', top: '30%' },
+    { left: '20%', top: '10%' },
+    { left: '35%', top: '50%' },
+    { left: '50%', top: '15%' },
+    { left: '65%', top: '40%' },
+    { left: '80%', top: '20%' },
+    { left: '15%', top: '70%' },
+    { left: '45%', top: '75%' },
+    { left: '75%', top: '65%' },
+    { left: '90%', top: '50%' },
+  ], []);
 
   return (
     <div className={cn("relative w-full h-64 overflow-hidden", className)}>
-      {/* Responsive Connection Lines SVG */}
+      {/* Optimized Responsive Connection Lines SVG */}
       <svg 
         className="absolute inset-0 w-full h-full pointer-events-none" 
-        viewBox={`0 0 ${width} ${height}`}
+        viewBox={`0 0 ${containerSize.width} ${containerSize.height}`}
         preserveAspectRatio="xMidYMid meet"
       >
         {/* Main connecting path */}
@@ -111,22 +130,11 @@ const ActivityTokens = ({ className }) => {
         />
       </svg>
 
-      {/* Activity Tokens - Positions remain stable */}
+      {/* Activity Tokens - Memoized for performance */}
       <div className="absolute inset-0 flex flex-wrap justify-center items-center gap-4 p-4">
         {activities.map((activity, index) => {
           const Icon = activity.icon;
-          const positions = [
-            { left: '5%', top: '30%' },
-            { left: '20%', top: '10%' },
-            { left: '35%', top: '50%' },
-            { left: '50%', top: '15%' },
-            { left: '65%', top: '40%' },
-            { left: '80%', top: '20%' },
-            { left: '15%', top: '70%' },
-            { left: '45%', top: '75%' },
-            { left: '75%', top: '65%' },
-            { left: '90%', top: '50%' },
-          ];
+          const position = tokenPositions[index] || { left: '50%', top: '50%' };
 
           return (
             <div
@@ -136,8 +144,8 @@ const ActivityTokens = ({ className }) => {
                 activity.color
               )}
               style={{
-                left: positions[index]?.left || '50%',
-                top: positions[index]?.top || '50%',
+                left: position.left,
+                top: position.top,
                 animationDelay: `${activity.delay}s`,
                 transform: 'translate(-50%, -50%)'
               }}
