@@ -9,6 +9,7 @@ class LibertyTrackerAPITester:
         self.tests_run = 0
         self.tests_passed = 0
         self.token = None
+        self.last_error = ""
 
     def run_test(self, name, method, endpoint, expected_status, data=None, auth=False):
         """Run a single API test"""
