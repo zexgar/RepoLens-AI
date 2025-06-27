@@ -3,6 +3,7 @@ import { Button } from "./button"
 import { Eye, EyeOff, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { GoogleLogin } from '@react-oauth/google'
+import { MagicCard } from "./magic-card"
 
 function CleanLoginSection({ 
   onGoogleLogin, 
