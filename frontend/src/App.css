@@ -152,17 +152,36 @@
   }
 }
 
-/* Enhanced flowing gradient button animation */
-.enhanced-flowing-gradient-button {
-  position: relative;
-  background: linear-gradient(90deg, #dc2626, #2563eb);
+/* Enhanced flowing gradient button animation for Manual Analysis */
+.fluid-gradient-button {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b, #10b981);
+  background-size: 300% 300%;
+  animation: fluid-gradient 8s ease infinite;
 }
 
-.enhanced-flowing-gradient-button:hover .bg-gradient-to-r {
-  animation: enhanced-gradient-flow 2s ease-in-out infinite;
+.fluid-gradient-button:hover {
+  animation: fluid-gradient-hover 2s ease infinite;
 }
 
-@keyframes enhanced-gradient-flow {
+@keyframes fluid-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fluid-gradient-hover {
   0% {
     background-position: 0% 50%;
   }
