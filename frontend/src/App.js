@@ -204,9 +204,9 @@ function App() {
               <span className="text-2xl ml-2">🎆</span>
             </div>
             
-            {/* Interactive Liberty Tracker Component */}
+            {/* Interactive Liberty Tracker Component - No Gradient */}
             <div className="mb-4 group cursor-pointer">
-              <h1 className="text-5xl md:text-6xl font-bold liberty-tracker-enhanced transition-all duration-300 group-hover:scale-105">
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 transition-all duration-300 group-hover:scale-105">
                 <span className="group-hover:hidden">Liberty Tracker</span>
                 <span className="hidden group-hover:inline">Freedom Calculator</span>
               </h1>
@@ -216,11 +216,11 @@ function App() {
               Paste your schedule data to discover how much of your time is truly free
             </p>
             
-            {/* Prominent Back Button - Similar to Landing Page Heading Style */}
-            <div className="liberty-tracker-header">
+            {/* Prominent Back Button - No Gradient */}
+            <div>
               <button
                 onClick={() => setShowManual(false)}
-                className="text-2xl font-medium liberty-tracker-enhanced hover:scale-105 transition-all duration-300 px-4 py-2 rounded-lg hover:bg-gray-50"
+                className="text-2xl font-medium text-gray-900 hover:text-gray-700 hover:scale-105 transition-all duration-300 px-4 py-2 rounded-lg hover:bg-gray-50"
               >
                 ← Back to Google Login
               </button>
