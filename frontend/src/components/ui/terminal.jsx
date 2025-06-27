@@ -2,12 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { cn } from "../../lib/utils";
 
 const Terminal = ({ children, className, ...props }) => {
+  const [currentHeight, setCurrentHeight] = useState(60); // Start with minimal height (header + 1 line)
+  const [visibleLines, setVisibleLines] = useState(0);
+
+  // Listen for line visibility changes from child components
+  useEffect(() => {
+    const handleLineVisible = (event) => {
+      const lineNumber = event.detail.lineNumber;
+      setVisibleLines(prev => Math.max(prev, lineNumber));
+    };
+
+    window.addEventListener('terminal-line-visible', handleLineVisible);
+    return () => window.removeEventListener('terminal-line-visible', handleLineVisible);
+  }, []);
+
+  // Calculate height based on visible lines
+  useEffect(() => {
+    // Base height: header (44px) + padding (32px) + minimum content (24px)
+    const baseHeight = 100;
+    // Each line approximately 24px (text + spacing)
+    const lineHeight = 24;
+    const newHeight = baseHeight + (visibleLines * lineHeight);
+    setCurrentHeight(Math.min(newHeight, 450)); // Max height limit
+  }, [visibleLines]);
+
   return (
     <div
       className={cn(
-        "relative w-full mx-auto bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden",
+        "relative w-full mx-auto bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden transition-all duration-500 ease-out",
         className
       )}
+      style={{ height: `${currentHeight}px` }}
       {...props}
     >
       {/* Terminal Header - Responsive */}
@@ -24,8 +49,8 @@ const Terminal = ({ children, className, ...props }) => {
         <div className="w-12 sm:w-16"></div>
       </div>
 
-      {/* Terminal Content - Responsive sizing */}
-      <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm leading-relaxed min-h-[250px] sm:min-h-[300px] max-h-[350px] sm:max-h-[400px] overflow-hidden bg-white">
+      {/* Terminal Content - Dynamic height with smooth overflow */}
+      <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-hidden bg-white">
         {children}
       </div>
     </div>
@@ -37,6 +62,7 @@ const TypingAnimation = ({
   delay = 0, 
   speed = 50, 
   className = "", 
+  lineNumber = 0,
   ...props 
 }) => {
   const [displayedText, setDisplayedText] = useState("");
@@ -45,10 +71,16 @@ const TypingAnimation = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
+      // Dispatch event to notify Terminal of new line
+      if (lineNumber > 0) {
+        window.dispatchEvent(new CustomEvent('terminal-line-visible', { 
+          detail: { lineNumber } 
+        }));
+      }
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [delay, lineNumber]);
 
   useEffect(() => {
     if (!isVisible) return;
@@ -81,7 +113,8 @@ const TypingAnimation = ({
 const AnimatedSpan = ({ 
   children, 
   delay = 0, 
-  className = "", 
+  className = "",
+  lineNumber = 0,
   ...props 
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -89,10 +122,16 @@ const AnimatedSpan = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
+      // Dispatch event to notify Terminal of new line
+      if (lineNumber > 0) {
+        window.dispatchEvent(new CustomEvent('terminal-line-visible', { 
+          detail: { lineNumber } 
+        }));
+      }
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [delay, lineNumber]);
 
   if (!isVisible) return null;
 
