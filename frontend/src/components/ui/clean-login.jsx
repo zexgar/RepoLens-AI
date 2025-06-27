@@ -218,11 +218,11 @@ function CleanLoginSection({
               </div>
             </div>
 
-            {/* Right Side - Slideshow */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 lg:min-h-[600px] flex items-center justify-center">
-              <div className="relative w-full h-full max-w-lg mx-auto p-8">
-                {/* Slideshow Container */}
-                <div className="relative h-full rounded-2xl overflow-hidden shadow-2xl">
+            {/* Right Side - Full-Width Slideshow */}
+            <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 lg:min-h-[600px] flex items-center justify-center p-0">
+              {/* Slideshow Container - Full Width */}
+              <div className="relative w-full h-full">
+                <div className="relative h-full overflow-hidden">
                   <div 
                     className="flex transition-transform duration-500 ease-in-out h-full"
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -246,19 +246,19 @@ function CleanLoginSection({
                   {/* Navigation Arrows */}
                   <button
                     onClick={prevSlide}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors backdrop-blur-sm"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors backdrop-blur-sm z-10"
                   >
                     <ChevronLeft className="w-6 h-6 text-white" />
                   </button>
                   <button
                     onClick={nextSlide}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors backdrop-blur-sm"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors backdrop-blur-sm z-10"
                   >
                     <ChevronRight className="w-6 h-6 text-white" />
                   </button>
 
                   {/* Slide Indicators */}
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
                     {slides.map((_, index) => (
                       <button
                         key={index}
