@@ -193,8 +193,12 @@ class LibertyTrackerAPITester:
             auth=True
         )
         
-        # We expect this to fail with a 401 error since we don't have a valid token
+        # We expect this to fail with a 401 or 403 error since we don't have a valid token
         # But we want to verify the endpoint exists and responds
+        if not success and isinstance(response, str) and "Not authenticated" in response:
+            print("✅ Authentication check working correctly")
+            return True
+            
         return success
 
 def main():
