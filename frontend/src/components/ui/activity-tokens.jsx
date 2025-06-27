@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Calendar, 
   Clock, 
@@ -16,6 +16,33 @@ import {
 import { cn } from "../../lib/utils";
 
 const ActivityTokens = ({ className }) => {
+  const [containerSize, setContainerSize] = useState({ width: 800, height: 256 });
+
+  useEffect(() => {
+    const updateContainerSize = () => {
+      // Get responsive container dimensions based on screen size
+      const screenWidth = window.innerWidth;
+      let width, height;
+      
+      if (screenWidth < 640) { // Mobile
+        width = screenWidth - 32; // Account for padding
+        height = 256;
+      } else if (screenWidth < 1024) { // Tablet
+        width = Math.min(screenWidth * 0.8, 800);
+        height = 256;
+      } else { // Desktop
+        width = Math.min(screenWidth * 0.7, 1000);
+        height = 256;
+      }
+      
+      setContainerSize({ width, height });
+    };
+
+    updateContainerSize();
+    window.addEventListener('resize', updateContainerSize);
+    return () => window.removeEventListener('resize', updateContainerSize);
+  }, []);
+
   const activities = [
     { icon: Briefcase, label: 'Work', color: 'bg-blue-100 border-blue-300 text-blue-700', delay: 0 },
     { icon: Users, label: 'Meetings', color: 'bg-purple-100 border-purple-300 text-purple-700', delay: 0.5 },
@@ -29,31 +56,54 @@ const ActivityTokens = ({ className }) => {
     { icon: Phone, label: 'Social', color: 'bg-teal-100 border-teal-300 text-teal-700', delay: 4.5 },
   ];
 
+  // Calculate responsive path coordinates
+  const { width, height } = containerSize;
+  const centerY = height / 2;
+  const quarterHeight = height / 4;
+  
+  // Generate responsive connecting paths
+  const getResponsivePaths = () => {
+    const segments = 6; // Number of path segments
+    const segmentWidth = width / segments;
+    
+    return {
+      mainPath: `M ${segmentWidth * 0.5} ${centerY} Q ${segmentWidth * 1.5} ${centerY - quarterHeight} ${segmentWidth * 2.5} ${centerY} Q ${segmentWidth * 3.5} ${centerY + quarterHeight} ${segmentWidth * 4.5} ${centerY} Q ${segmentWidth * 5.5} ${centerY - quarterHeight} ${width - segmentWidth * 0.5} ${centerY}`,
+      
+      topPath: `M ${segmentWidth} ${centerY - quarterHeight} Q ${segmentWidth * 2} ${centerY} ${segmentWidth * 3} ${centerY - quarterHeight} Q ${segmentWidth * 4} ${centerY - quarterHeight * 1.5} ${segmentWidth * 5} ${centerY - quarterHeight}`,
+      
+      bottomPath: `M ${segmentWidth * 0.75} ${centerY + quarterHeight} Q ${segmentWidth * 2} ${centerY} ${segmentWidth * 3} ${centerY + quarterHeight} Q ${segmentWidth * 4} ${centerY + quarterHeight * 1.5} ${segmentWidth * 5.25} ${centerY + quarterHeight}`
+    };
+  };
+
+  const responsivePaths = getResponsivePaths();
+
   return (
     <div className={cn("relative w-full h-64 overflow-hidden", className)}>
-      {/* Connection Lines SVG */}
+      {/* Responsive Connection Lines SVG */}
       <svg 
         className="absolute inset-0 w-full h-full pointer-events-none" 
-        viewBox="0 0 800 256"
+        viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Connecting paths between tokens */}
+        {/* Main connecting path */}
         <path
-          d="M 80 128 Q 200 80 320 128 Q 440 176 560 128 Q 680 80 720 128"
+          d={responsivePaths.mainPath}
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
           className="text-gray-300 connection-line opacity-60"
         />
+        {/* Top connecting path */}
         <path
-          d="M 160 80 Q 280 128 400 80 Q 520 32 640 80"
+          d={responsivePaths.topPath}
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
           className="text-gray-300 connection-line opacity-40"
         />
+        {/* Bottom connecting path */}
         <path
-          d="M 120 176 Q 240 128 360 176 Q 480 224 600 176"
+          d={responsivePaths.bottomPath}
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -61,7 +111,7 @@ const ActivityTokens = ({ className }) => {
         />
       </svg>
 
-      {/* Activity Tokens */}
+      {/* Activity Tokens - Positions remain stable */}
       <div className="absolute inset-0 flex flex-wrap justify-center items-center gap-4 p-4">
         {activities.map((activity, index) => {
           const Icon = activity.icon;
