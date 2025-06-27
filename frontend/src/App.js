@@ -194,28 +194,37 @@ function App() {
     return (
       <div className="min-h-screen bg-white">
         <div className="max-w-4xl mx-auto px-4 py-8">
-          {/* Redesigned Header */}
+          {/* Redesigned Header with Interactive Liberty Tracker */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-2">
-              <span className="text-4xl mr-3">🇺🇸</span>
+              <span className="text-2xl mr-2">🇺🇸</span>
               <p className="text-xl text-gray-700 font-semibold">
                 Manual Analysis Mode
               </p>
-              <span className="text-4xl ml-3">🎆</span>
+              <span className="text-2xl ml-2">🎆</span>
             </div>
-            {/* Liberty Tracker on its own line with enhanced gradient */}
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 liberty-tracker-enhanced">
-              Liberty Tracker
-            </h1>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-4">
+            
+            {/* Interactive Liberty Tracker Component */}
+            <div className="mb-4 group cursor-pointer">
+              <h1 className="text-5xl md:text-6xl font-bold liberty-tracker-enhanced transition-all duration-300 group-hover:scale-105">
+                <span className="group-hover:hidden">Liberty Tracker</span>
+                <span className="hidden group-hover:inline">Freedom Calculator</span>
+              </h1>
+            </div>
+            
+            <p className="text-gray-600 max-w-2xl mx-auto mb-6">
               Paste your schedule data to discover how much of your time is truly free
             </p>
-            <button
-              onClick={() => setShowManual(false)}
-              className="text-blue-600 hover:text-blue-700 underline font-medium"
-            >
-              ← Back to Google Login
-            </button>
+            
+            {/* Prominent Back Button - Similar to Landing Page Heading Style */}
+            <div className="liberty-tracker-header">
+              <button
+                onClick={() => setShowManual(false)}
+                className="text-2xl font-medium liberty-tracker-enhanced hover:scale-105 transition-all duration-300 px-4 py-2 rounded-lg hover:bg-gray-50"
+              >
+                ← Back to Google Login
+              </button>
+            </div>
           </div>
 
           <ActivityTokens className="mb-12" />
