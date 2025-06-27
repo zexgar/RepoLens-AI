@@ -380,6 +380,10 @@
   .liberty-gradient {
     animation: none;
   }
+  
+  .terminal-dissolve::after {
+    animation: none;
+  }
 }
 
 /* Focus states for accessibility */
