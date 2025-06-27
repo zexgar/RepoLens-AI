@@ -22,27 +22,27 @@ function CleanLoginSection({
   // Slideshow images of people with good habits
   const slides = [
     {
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop",
+      image: "/Assets/morning-routine.jpg",
       title: "Morning Routine",
       description: "Start your day with intention and clarity"
     },
     {
-      image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=600&h=400&fit=crop",
+      image: "/Assets/focused-work.jpg",
       title: "Focused Work",
       description: "Deep work sessions for maximum productivity"
     },
     {
-      image: "https://images.unsplash.com/photo-1506629905607-ce91fd63c4d4?w=600&h=400&fit=crop",
+      image: "/Assets/time-management.jpg",
       title: "Time Management",
       description: "Organize your schedule for better work-life balance"
     },
     {
-      image: "https://images.unsplash.com/photo-1594736797933-d0b22d34bbc8?w=600&h=400&fit=crop",
+      image: "/Assets/mindful-planning.jpg",
       title: "Mindful Planning",
       description: "Strategic thinking leads to time freedom"
     },
     {
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop",
+      image: "/Assets/team-collaboration.jpg",
       title: "Team Collaboration",
       description: "Efficient meetings and productive teamwork"
     }
