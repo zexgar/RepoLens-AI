@@ -8,8 +8,8 @@ import {
 export function LibertyTrackerTerminal() {
   return (
     <div className="relative terminal-dissolve">
-      {/* Full terminal with enhanced dissolving effect */}
-      <Terminal className="transform translate-y-0 relative z-10">
+      {/* Terminal layered properly with gradient background */}
+      <Terminal className="transform translate-y-0 relative z-10 shadow-2xl">
         <TypingAnimation className="text-blue-600 font-semibold">
           📊 &gt; liberty-tracker analyze --schedule daily
         </TypingAnimation>
