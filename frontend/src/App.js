@@ -215,25 +215,22 @@ function App() {
             className="pb-0"
           />
 
-          {/* Clean Activity Tokens Section - Edge to Edge Connection */}
-          <section className="relative bg-gray-50 overflow-hidden -mt-px pt-0">
-            {/* FlickeringGrid Background with Masking */}
-            <div className="absolute inset-0 opacity-15">
+          {/* Activity Tokens Section - Integrated Design */}
+          <section className="relative bg-white overflow-hidden py-16">
+            {/* Subtle background pattern */}
+            <div className="absolute inset-0 opacity-10">
               <FlickeringGrid
                 className="absolute inset-0 w-full h-full"
                 squareSize={3}
                 gridGap={8}
                 color="#3b82f6"
-                maxOpacity={0.4}
-                flickerChance={0.15}
+                maxOpacity={0.3}
+                flickerChance={0.1}
               />
-              {/* Gradient mask to reveal only certain areas */}
-              <div className="absolute inset-0 bg-gradient-to-b from-gray-50/60 via-gray-50/30 to-gray-50/80"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-gray-50/40 via-transparent to-gray-50/40"></div>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 relative z-20 py-20">
-              <div className="text-center mb-16">
+            <div className="max-w-6xl mx-auto px-4 relative z-20">
+              <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-medium text-gray-900 mb-4">
                   Track Your Daily <span className="section-gradient">Activities</span>
                 </h2>
