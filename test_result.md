@@ -307,18 +307,9 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "UI transformation to Material 3 design"
-    - "Activity tokens with icons and connecting lines"
-    - "Dynamic Liberty Tracker gradient text"
-    - "Hero section component integration"
-    - "Interactive login component"
-    - "Clean activities section without terminal"
-    - "Updated font weights to medium"
-    - "FlickeringGrid background integration"
-    - "Responsive and accessible design"
+  current_focus: []
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
