@@ -85,9 +85,12 @@ function CleanLoginSection({
             {/* Left Side - Login Form with MagicCard */}
             <div className="p-8 lg:p-12 flex items-center justify-center">
               <MagicCard 
-                className="w-full max-w-md shadow-none border-gray-200 bg-white"
-                gradientColor="#3b82f6"
-                gradientOpacity={0.1}
+                className="w-full max-w-md shadow-none border-gray-200 bg-white rounded-xl border"
+                gradientSize={300}
+                gradientColor="#3b82f655"
+                gradientOpacity={0.6}
+                gradientFrom="#3b82f6"
+                gradientTo="#8b5cf6"
               >
                 <div className="p-8">
                   <h2 className="text-2xl font-semibold text-gray-900 mb-2">
