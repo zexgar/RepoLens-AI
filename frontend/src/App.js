@@ -194,24 +194,25 @@ function App() {
     return (
       <div className="min-h-screen bg-white">
         <div className="max-w-4xl mx-auto px-4 py-8">
-          {/* Header */}
+          {/* Redesigned Header */}
           <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-4">
-              <span className="text-5xl mr-4">🇺🇸</span>
-              <h1 className="text-4xl font-bold liberty-gradient">
-                Liberty Tracker
-              </h1>
-              <span className="text-5xl ml-4">🎆</span>
+            <div className="flex items-center justify-center mb-2">
+              <span className="text-4xl mr-3">🇺🇸</span>
+              <p className="text-xl text-gray-700 font-semibold">
+                Manual Analysis Mode
+              </p>
+              <span className="text-4xl ml-3">🎆</span>
             </div>
-            <p className="text-xl text-gray-700 font-semibold mb-2">
-              Manual Analysis Mode
-            </p>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            {/* Liberty Tracker on its own line with enhanced gradient */}
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 liberty-tracker-enhanced">
+              Liberty Tracker
+            </h1>
+            <p className="text-gray-600 max-w-2xl mx-auto mb-4">
               Paste your schedule data to discover how much of your time is truly free
             </p>
             <button
               onClick={() => setShowManual(false)}
-              className="mt-4 text-blue-600 hover:text-blue-700 underline"
+              className="text-blue-600 hover:text-blue-700 underline font-medium"
             >
               ← Back to Google Login
             </button>
