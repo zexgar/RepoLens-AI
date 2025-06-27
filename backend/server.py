@@ -654,10 +654,6 @@ async def analyze_calendar(request: CalendarAnalysisRequest):
         logging.error(f"Error analyzing calendar: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
-    except Exception as e:
-        logging.error(f"Error analyzing calendar: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
-
 # Include the router in the main app
 app.include_router(api_router)
 
