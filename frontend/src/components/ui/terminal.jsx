@@ -10,17 +10,18 @@ const Terminal = ({ children, className, ...props }) => {
       )}
       {...props}
     >
-      {/* Terminal Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-b border-gray-200">
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+      {/* Terminal Header - Responsive */}
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-b border-gray-200">
+        <div className="flex items-center space-x-1.5 sm:space-x-2">
+          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
+          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
+          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
         </div>
-        <div className="text-gray-700 text-sm font-mono font-medium">
-          🗽 Liberty Tracker Analysis Terminal 🎯
+        <div className="text-gray-700 text-xs sm:text-sm font-mono font-medium text-center flex-1 px-2">
+          <span className="hidden sm:inline">🗽 Liberty Tracker Analysis Terminal 🎯</span>
+          <span className="sm:hidden">🗽 Liberty Tracker 🎯</span>
         </div>
-        <div className="w-16"></div>
+        <div className="w-12 sm:w-16"></div>
       </div>
 
       {/* Terminal Content - Responsive sizing */}
