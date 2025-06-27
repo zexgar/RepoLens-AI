@@ -136,10 +136,6 @@ const HeroSection = React.forwardRef(
                 {terminalComponent}
               </div>
             </div>
-            
-            {/* Subtle overlay for better blending */}
-            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-white/40 to-white pointer-events-none z-30"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent via-white/80 to-white pointer-events-none z-35"></div>
           </div>
         )}
       </div>
