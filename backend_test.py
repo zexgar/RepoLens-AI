@@ -4,7 +4,7 @@ import sys
 from datetime import datetime
 
 class LibertyTrackerAPITester:
-    def __init__(self, base_url="https://6d6627b3-30eb-4dd8-b630-98dc800ca9a2.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://dd2e7103-bf7a-4ae0-924e-309ae4635203.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0
