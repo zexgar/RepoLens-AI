@@ -267,29 +267,6 @@
   overflow: visible; /* Allow dissolving effect to extend beyond terminal */
 }
 
-/* Enhanced terminal dissolving that works with background gradient */
-.terminal-dissolve::after {
-  content: '';
-  position: absolute;
-  bottom: -20px; /* Extend slightly below terminal */
-  left: -20px;   /* Extend slightly beyond sides */
-  right: -20px;  /* Extend slightly beyond sides */
-  height: 120px;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(255, 255, 255, 0.1) 15%,
-    rgba(255, 255, 255, 0.3) 35%,
-    rgba(255, 255, 255, 0.6) 60%,
-    rgba(255, 255, 255, 0.85) 80%,
-    rgba(255, 255, 255, 0.95) 90%,
-    rgb(255, 255, 255) 100%
-  );
-  pointer-events: none;
-  z-index: 40;
-  animation: dissolve-pulse 10s ease-in-out infinite;
-}
-
 /* Subtle dissolving animation */
 @keyframes dissolve-pulse {
   0%, 100% {
