@@ -372,13 +372,6 @@ Example:
     return (
       <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
         <div className="min-h-screen bg-white">
-          {/* Debug indicator */}
-          {showManual && (
-            <div className="fixed top-4 right-4 bg-red-500 text-white p-2 rounded z-50">
-              DEBUG: showManual is TRUE but not rendering manual screen
-            </div>
-          )}
-          
           {/* Hero Section */}
           <HeroSection
             title="Welcome to Liberty Tracker"
