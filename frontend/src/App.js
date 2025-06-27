@@ -293,7 +293,10 @@ function App() {
             <CleanLoginSection
               onGoogleLogin={handleGoogleLogin}
               onGoogleLoginError={handleGoogleLoginError}
-              onManualToggle={() => setShowManual(true)}
+              onManualToggle={() => {
+                console.log("Manual toggle clicked!");
+                setShowManual(true);
+              }}
               loading={loading}
               error={error}
             />
