@@ -110,9 +110,9 @@ const HeroSection = React.forwardRef(
               </div>
             </div>
             
-            {/* Dissolving fade gradient overlay */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-gray-50/60 to-gray-50 pointer-events-none z-30"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-b from-transparent to-gray-50 pointer-events-none z-40"></div>
+            {/* Enhanced dissolving fade gradient overlay - coordinates with terminal-dissolve */}
+            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-gray-50/40 to-gray-50 pointer-events-none z-25"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent via-gray-50/80 to-gray-50 pointer-events-none z-30"></div>
           </div>
         )}
       </div>
