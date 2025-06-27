@@ -239,11 +239,11 @@ function CleanLoginSection({
               </MagicCard>
             </div>
 
-            {/* Right Side - Slideshow with Equal Height */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 p-8 lg:p-12 flex items-center justify-center">
-              {/* Slideshow Container - Equal Height */}
-              <div className="relative w-full h-full max-w-md">
-                <div className="relative h-full overflow-hidden rounded-xl">
+            {/* Right Side - Full-Width Slideshow */}
+            <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-0">
+              {/* Slideshow Container - Full Width */}
+              <div className="relative w-full h-full">
+                <div className="relative h-full overflow-hidden">
                   <div 
                     className="flex transition-transform duration-500 ease-in-out h-full"
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}
