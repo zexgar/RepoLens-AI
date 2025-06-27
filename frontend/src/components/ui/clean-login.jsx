@@ -251,11 +251,11 @@ function CleanLoginSection({
                     {slides.map((slide, index) => (
                       <div key={index} className="min-w-full h-full relative">
                         {imageErrors[index] ? (
-                          <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                          <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center object-cover">
                             <div className="text-center text-gray-600">
                               <div className="text-6xl mb-4">📸</div>
                               <p className="text-lg font-medium">Image not found</p>
-                              <p className="text-sm">{slide.image}</p>
+                              <p className="text-sm opacity-75">{slide.image}</p>
                             </div>
                           </div>
                         ) : (
