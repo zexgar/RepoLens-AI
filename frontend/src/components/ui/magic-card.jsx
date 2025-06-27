@@ -1,80 +1,95 @@
-import React, { useEffect, useRef, useState } from "react";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import React, { useCallback, useEffect, useRef } from "react";
 import { cn } from "../../lib/utils";
 
 export function MagicCard({
   children,
   className,
-  gradientColor = "#D9D9D955",
+  gradientSize = 200,
+  gradientColor = "#262626",
   gradientOpacity = 0.8,
-  ...props
+  gradientFrom = "#9E7AFF",
+  gradientTo = "#FE8BBB",
 }) {
   const cardRef = useRef(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+  const mouseX = useMotionValue(-gradientSize);
+  const mouseY = useMotionValue(-gradientSize);
+
+  const handleMouseMove = useCallback(
+    (e) => {
+      if (cardRef.current) {
+        const { left, top } = cardRef.current.getBoundingClientRect();
+        const clientX = e.clientX;
+        const clientY = e.clientY;
+        mouseX.set(clientX - left);
+        mouseY.set(clientY - top);
+      }
+    },
+    [mouseX, mouseY],
+  );
+
+  const handleMouseOut = useCallback(
+    (e) => {
+      if (!e.relatedTarget) {
+        document.removeEventListener("mousemove", handleMouseMove);
+        mouseX.set(-gradientSize);
+        mouseY.set(-gradientSize);
+      }
+    },
+    [handleMouseMove, mouseX, gradientSize, mouseY],
+  );
+
+  const handleMouseEnter = useCallback(() => {
+    document.addEventListener("mousemove", handleMouseMove);
+    mouseX.set(-gradientSize);
+    mouseY.set(-gradientSize);
+  }, [handleMouseMove, mouseX, gradientSize, mouseY]);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (!cardRef.current) return;
-      
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      setMousePosition({ x, y });
-    };
-
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
-
-    const card = cardRef.current;
-    if (card) {
-      card.addEventListener("mousemove", handleMouseMove);
-      card.addEventListener("mouseenter", handleMouseEnter);
-      card.addEventListener("mouseleave", handleMouseLeave);
-    }
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseout", handleMouseOut);
+    document.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
-      if (card) {
-        card.removeEventListener("mousemove", handleMouseMove);
-        card.removeEventListener("mouseenter", handleMouseEnter);
-        card.removeEventListener("mouseleave", handleMouseLeave);
-      }
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseout", handleMouseOut);
+      document.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, []);
+  }, [handleMouseEnter, handleMouseMove, handleMouseOut]);
+
+  useEffect(() => {
+    mouseX.set(-gradientSize);
+    mouseY.set(-gradientSize);
+  }, [gradientSize, mouseX, mouseY]);
 
   return (
     <div
       ref={cardRef}
-      className={cn(
-        "relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300",
-        className
-      )}
-      {...props}
+      className={cn("group relative rounded-[inherit]", className)}
     >
-      {/* Magic gradient overlay */}
-      <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
+      <motion.div
+        className="pointer-events-none absolute inset-0 rounded-[inherit] bg-border duration-300 group-hover:opacity-100"
         style={{
-          opacity: isHovering ? gradientOpacity : 0,
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, ${gradientColor}, transparent 40%)`,
+          background: useMotionTemplate`
+          radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
+          ${gradientFrom}, 
+          ${gradientTo}, 
+          hsl(var(--border)) 100%
+          )
+          `,
         }}
       />
-      
-      {/* Magic border effect */}
-      <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
+      <div className="absolute inset-px rounded-[inherit] bg-background" />
+      <motion.div
+        className="pointer-events-none absolute inset-px rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          opacity: isHovering ? 1 : 0,
-          background: `radial-gradient(300px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(147, 197, 253, 0.4), transparent 40%)`,
-          maskImage: "linear-gradient(transparent, transparent, transparent, black, black, black, transparent, transparent, transparent)",
-          WebkitMaskImage: "linear-gradient(transparent, transparent, transparent, black, black, black, transparent, transparent, transparent)",
+          background: useMotionTemplate`
+            radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)
+          `,
+          opacity: gradientOpacity,
         }}
       />
-
-      {/* Content */}
-      <div className="relative z-10">
-        {children}
-      </div>
+      <div className="relative">{children}</div>
     </div>
   );
 }
