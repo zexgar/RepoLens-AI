@@ -236,7 +236,7 @@ async def auth_google_calendar():
         )
         
         # Set redirect URI
-        flow.redirect_uri = "https://3ccee77a-e34c-4084-879b-01eff61fd7ea.preview.emergentagent.com/api/auth/callback"
+        flow.redirect_uri = "https://6d6627b3-30eb-4dd8-b630-98dc800ca9a2.preview.emergentagent.com/api/auth/callback"
         
         # Generate OAuth URL
         authorization_url, state = flow.authorization_url(
@@ -267,7 +267,7 @@ async def auth_callback(code: str, state: str = None):
             scopes=SCOPES
         )
         
-        flow.redirect_uri = "https://3ccee77a-e34c-4084-879b-01eff61fd7ea.preview.emergentagent.com/api/auth/callback"
+        flow.redirect_uri = "https://6d6627b3-30eb-4dd8-b630-98dc800ca9a2.preview.emergentagent.com/api/auth/callback"
         
         # Exchange code for token - disable scope validation
         try:
@@ -287,7 +287,7 @@ async def auth_callback(code: str, state: str = None):
                 },
                 scopes=None  # Don't validate scopes
             )
-            flow.redirect_uri = "https://3ccee77a-e34c-4084-879b-01eff61fd7ea.preview.emergentagent.com/api/auth/callback"
+            flow.redirect_uri = "https://6d6627b3-30eb-4dd8-b630-98dc800ca9a2.preview.emergentagent.com/api/auth/callback"
             flow.fetch_token(code=code)
             credentials = flow.credentials
         
@@ -343,11 +343,11 @@ async def auth_callback(code: str, state: str = None):
         jwt_token = jwt.encode(user_token, "secret", algorithm="HS256")
         
         # Redirect to frontend with success and token
-        return RedirectResponse(url=f"https://3ccee77a-e34c-4084-879b-01eff61fd7ea.preview.emergentagent.com/?auth=success&token={jwt_token}&user={user_email}&name={user_name}")
+        return RedirectResponse(url=f"https://6d6627b3-30eb-4dd8-b630-98dc800ca9a2.preview.emergentagent.com/?auth=success&token={jwt_token}&user={user_email}&name={user_name}")
         
     except Exception as e:
         logging.error(f"OAuth callback error: {str(e)}")
-        return RedirectResponse(url="https://3ccee77a-e34c-4084-879b-01eff61fd7ea.preview.emergentagent.com/?auth=error")
+        return RedirectResponse(url="https://6d6627b3-30eb-4dd8-b630-98dc800ca9a2.preview.emergentagent.com/?auth=error")
 
 @api_router.get("/calendar/events")
 async def get_calendar_events(
