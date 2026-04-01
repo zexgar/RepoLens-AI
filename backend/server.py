@@ -1,5 +1,5 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Cookie
+from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -11,12 +11,12 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timedelta
-import openai
 import json
 
 # Google Auth imports
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 import jwt
@@ -30,12 +30,10 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# OpenAI setup
-openai_api_key = os.environ.get('OPENAI_API_KEY')
-if not openai_api_key:
-    logging.warning("OPENAI_API_KEY not found in environment variables")
-else:
-    openai.api_key = openai_api_key
+# Environment Variables setup
+JWT_SECRET = os.environ.get('JWT_SECRET', 'fallback_development_secret')
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
+OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI', f"{FRONTEND_URL}/api/auth/callback")
 
 # Google OAuth setup
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
@@ -88,16 +86,23 @@ class UserToken(BaseModel):
     user_name: str
 
 # Helper functions
-async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    """Get current user from JWT token"""
+async def get_current_user(access_token: Optional[str] = Cookie(None)):
+    """Get current user from JWT cookie"""
+    if not access_token:
+        raise HTTPException(status_code=401, detail="Authentication required")
     try:
-        token = credentials.credentials
-        # Try to decode with our simple secret first
+        token = access_token
+        # Try to decode with our secure secret first
         try:
-            payload = jwt.decode(token, "secret", algorithms=['HS256'])
+            payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
         except:
-            # Fallback to Google JWT (no verification for demo)
-            payload = jwt.decode(token, options={"verify_signature": False})
+            # Fallback to authenticating with Google properly
+            try:
+                request = Request()
+                payload = id_token.verify_oauth2_token(token, request, GOOGLE_CLIENT_ID)
+            except Exception as e:
+                logging.error(f"Failed to verify Google Token: {str(e)}")
+                raise HTTPException(status_code=401, detail="Invalid token signature")
         
         user_email = payload.get('user_email') or payload.get('email')
         
@@ -151,9 +156,18 @@ def format_calendar_events(events: List[Dict]) -> str:
     return "\n".join(formatted_events)
 
 # Add your routes to the router instead of directly to app
-@api_router.get("/")
+@api_router.get("/", tags=["Root"])
 async def root():
     return {"message": "Liberty Tracker - Time Freedom Calculator API 🇺🇸"}
+
+@api_router.get("/auth/me")
+async def get_me(user: dict = Depends(get_current_user)):
+    """Get the currently logged in user based on HttpOnly cookie."""
+    return {"user": {
+        "email": user.get("user_email"),
+        "name": user.get("user_name"),
+        "id": user.get("user_id")
+    }}
 
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
@@ -163,16 +177,17 @@ async def create_status_check(input: StatusCheckCreate):
     return status_obj
 
 @api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    status_checks = await db.status_checks.find().to_list(1000)
+async def get_status_checks(skip: int = 0, limit: int = 100):
+    status_checks = await db.status_checks.find().skip(skip).limit(limit).to_list(limit)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
 @api_router.post("/auth/google")
 async def auth_google(request: GoogleAuthRequest):
     """Handle Google OAuth token from frontend"""
     try:
-        # Decode the Google JWT token
-        payload = jwt.decode(request.token, options={"verify_signature": False})
+        # Verify and decode the Google JWT token securely
+        verify_request = Request()
+        payload = id_token.verify_oauth2_token(request.token, verify_request, GOOGLE_CLIENT_ID)
         
         user_email = payload.get('email')
         user_name = payload.get('name')
@@ -202,21 +217,37 @@ async def auth_google(request: GoogleAuthRequest):
             upsert=True
         )
         
-        # Create a simple token (in production, use proper JWT signing)
-        token = jwt.encode(user_token, "secret", algorithm="HS256")
+        # Create a secure token
+        token = jwt.encode(user_token, JWT_SECRET, algorithm="HS256")
         
-        return {
-            "access_token": token,
+        # Return via secure cookie
+        response = JSONResponse(content={
             "user": {
                 "email": user_email,
                 "name": user_name,
                 "id": user_id
             }
-        }
+        })
+        response.set_cookie(
+            key="access_token",
+            value=token,
+            httponly=True,
+            secure=True,
+            samesite="lax",
+            max_age=86400
+        )
+        return response
         
     except Exception as e:
         logging.error(f"Google auth error: {str(e)}")
         raise HTTPException(status_code=400, detail="Authentication failed")
+
+@api_router.post("/auth/logout")
+async def logout():
+    """Logout endpoint to clear the HttpOnly cookie"""
+    response = JSONResponse(content={"message": "Successfully logged out"})
+    response.delete_cookie("access_token")
+    return response
 
 @api_router.get("/auth/google-calendar")
 async def auth_google_calendar():
@@ -236,7 +267,7 @@ async def auth_google_calendar():
         )
         
         # Set redirect URI
-        flow.redirect_uri = "https://dd2e7103-bf7a-4ae0-924e-309ae4635203.preview.emergentagent.com/api/auth/callback"
+        flow.redirect_uri = OAUTH_REDIRECT_URI
         
         # Generate OAuth URL
         authorization_url, state = flow.authorization_url(
@@ -267,7 +298,7 @@ async def auth_callback(code: str, state: str = None):
             scopes=SCOPES
         )
         
-        flow.redirect_uri = "https://dd2e7103-bf7a-4ae0-924e-309ae4635203.preview.emergentagent.com/api/auth/callback"
+        flow.redirect_uri = OAUTH_REDIRECT_URI
         
         # Exchange code for token - disable scope validation
         try:
@@ -287,7 +318,7 @@ async def auth_callback(code: str, state: str = None):
                 },
                 scopes=None  # Don't validate scopes
             )
-            flow.redirect_uri = "https://dd2e7103-bf7a-4ae0-924e-309ae4635203.preview.emergentagent.com/api/auth/callback"
+            flow.redirect_uri = OAUTH_REDIRECT_URI
             flow.fetch_token(code=code)
             credentials = flow.credentials
         
@@ -339,15 +370,24 @@ async def auth_callback(code: str, state: str = None):
             "exp": datetime.utcnow() + timedelta(hours=24)
         }
         
-        # Create a simple token (in production, use proper JWT signing)
-        jwt_token = jwt.encode(user_token, "secret", algorithm="HS256")
+        # Create a secure token
+        jwt_token = jwt.encode(user_token, JWT_SECRET, algorithm="HS256")
         
-        # Redirect to frontend with success and token
-        return RedirectResponse(url=f"https://dd2e7103-bf7a-4ae0-924e-309ae4635203.preview.emergentagent.com/?auth=success&token={jwt_token}&user={user_email}&name={user_name}")
+        # Redirect to frontend with success
+        response = RedirectResponse(url=f"{FRONTEND_URL}/?auth=success")
+        response.set_cookie(
+            key="access_token",
+            value=jwt_token,
+            httponly=True,
+            secure=True,
+            samesite="lax",
+            max_age=86400
+        )
+        return response
         
     except Exception as e:
         logging.error(f"OAuth callback error: {str(e)}")
-        return RedirectResponse(url="https://dd2e7103-bf7a-4ae0-924e-309ae4635203.preview.emergentagent.com/?auth=error")
+        return RedirectResponse(url=f"{FRONTEND_URL}/?auth=error")
 
 @api_router.get("/calendar/events")
 async def get_calendar_events(
@@ -660,7 +700,7 @@ app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=["*"],
+    allow_origins=[FRONTEND_URL],
     allow_methods=["*"],
     allow_headers=["*"],
 )

@@ -8,13 +8,12 @@ import { LibertyTrackerTerminal } from './components/ui/liberty-tracker-terminal
 import { FlickeringGrid } from './components/ui/flickering-grid';
 import { CleanLoginSection } from './components/ui/clean-login';
 import { Calendar, TrendingUp, BarChart3, Clock, Users, CheckCircle2 } from 'lucide-react';
+import { useAuth } from './context/AuthContext';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 function App() {
-  const [user, setUser] = useState(null);
+  const { user, loading: authLoading, loginWithGoogleToken, logout, API } = useAuth();
   const [calendarData, setCalendarData] = useState("");
   const [timePeriod, setTimePeriod] = useState("this_week");
   const [analysis, setAnalysis] = useState(null);
@@ -22,71 +21,15 @@ function App() {
   const [error, setError] = useState("");
   const [showManual, setShowManual] = useState(false);
 
-  useEffect(() => {
-    // Check if user is already logged in
-    const token = localStorage.getItem('access_token');
-    const userData = localStorage.getItem('user_data');
-    
-    if (token && userData) {
-      setUser(JSON.parse(userData));
-    }
-    
-    // Check for OAuth callback with token
-    const urlParams = new URLSearchParams(window.location.search);
-    const authStatus = urlParams.get('auth');
-    const authToken = urlParams.get('token');
-    const userEmail = urlParams.get('user');
-    const userName = urlParams.get('name');
-    
-    if (authStatus === 'success' && authToken && userEmail) {
-      // Store token and user data from OAuth callback
-      localStorage.setItem('access_token', authToken);
-      localStorage.setItem('user_data', JSON.stringify({
-        email: userEmail,
-        name: userName,
-        id: userEmail
-      }));
-      
-      setUser({
-        email: userEmail,
-        name: userName,
-        id: userEmail
-      });
-      
-      // Clear URL params
-      window.history.replaceState({}, '', window.location.pathname);
-    } else if (authStatus === 'error') {
-      setError('Google Calendar authorization failed. Please try again.');
-    }
-  }, []);
-
   const handleGoogleLogin = async (credentialResponse) => {
     try {
-      setLoading(true);
-      setError("");
-      
-      const result = await axios.post(`${API}/auth/google`, {
-        token: credentialResponse.credential
-      });
-      
-      const { access_token, user: userData } = result.data;
-      
-      // Store token and user data
-      localStorage.setItem('access_token', access_token);
-      localStorage.setItem('user_data', JSON.stringify(userData));
-      
-      setUser(userData);
-      
+      await loginWithGoogleToken(credentialResponse);
     } catch (err) {
-      console.error("Google login error:", err);
-      setError(err.response?.data?.detail || "Login failed. Please try again.");
-    } finally {
-      setLoading(false);
+      setError(err.response?.data?.detail || "Login failed.");
     }
   };
 
   const handleGoogleLoginError = () => {
-    console.error("Google login failed");
     setError("Google login failed. Please try again.");
   };
 
@@ -113,15 +56,9 @@ function App() {
     setError("");
     
     try {
-      const token = localStorage.getItem('access_token');
       const response = await axios.post(
         `${API}/analyze-calendar-auto?time_period=${timePeriod}`,
-        {},
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
+        {}  // withCredentials handles auth token cookie centrally
       );
       
       setAnalysis(response.data);
@@ -161,10 +98,8 @@ function App() {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_data');
-    setUser(null);
+  const handleLogout = async () => {
+    await logout();
     setAnalysis(null);
     setCalendarData("");
     setError("");
@@ -381,6 +316,14 @@ Example:
   }
 
   // Landing Page/Login Screen
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+      </div>
+    );
+  }
+
   if (!user) {
     return (
       <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
@@ -515,7 +458,7 @@ Example:
                   <p className="text-gray-500 text-sm">{user.email}</p>
                 </div>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors border border-gray-300"
                 >
                   Logout
