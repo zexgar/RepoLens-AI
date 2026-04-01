@@ -20,7 +20,6 @@ This project explores a simple but powerful idea:
 
 ## 🔍 What it does
 
-- 🔗 Connect your own AI API (Gemini or others)
 - 📂 Import any GitHub repository (specific branches supported)
 - 🧠 Analyze code using structured AI context
 - ⚠️ Detect:
@@ -31,6 +30,11 @@ This project explores a simple but powerful idea:
 - 📊 Generate an overall AI Review Score
 
 ---
+## 🔑 Environment Setup
+
+Create a `.env` file:
+
+GEMINI_API_KEY=your_key_here
 
 ## 🧩 Key Features
 
