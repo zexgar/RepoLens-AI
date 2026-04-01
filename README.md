@@ -18,6 +18,28 @@ This project explores a simple but powerful idea:
 
 ---
 
+## 🧠 AI Analysis Approach
+
+We use structured prompts that:
+- enforce security-first reasoning
+- analyze scalability patterns
+- identify risk severity
+
+(Not a fine-tuned model — prompt-engineered)
+
+---
+
+## 📊 How scoring works
+
+The score is based on:
+- Severity of issues
+- Number of vulnerabilities
+- Scalability risks
+
+(Note: heuristic-based, not deterministic yet)
+
+---
+
 ## 🔍 What it does
 
 - 📂 Import any GitHub repository (specific branches supported)
@@ -30,11 +52,14 @@ This project explores a simple but powerful idea:
 - 📊 Generate an overall AI Review Score
 
 ---
+
 ## 🔑 Environment Setup
 
 Create a `.env` file:
 
 GEMINI_API_KEY=your_key_here
+
+---
 
 ## 🧩 Key Features
 
@@ -112,14 +137,12 @@ Inspired by tools like CodeRabbit and TestSprite — but designed to be:
 
 ---
 
-## 📌 Future Roadmap
+## 🚀 Roadmap
 
-- [ ] Multi-model AI comparison (Gemini vs others)
-- [ ] Real-time code review
-- [ ] Plugin for GitHub / VS Code
-- [ ] Improved scoring transparency
-- [ ] Team collaboration features
-
+- [ ] Multi-model support
+- [ ] Real-time analysis
+- [ ] VS Code extension
+- [ ] Better scoring system
 ---
 
 ## 🧑‍💻 Author
